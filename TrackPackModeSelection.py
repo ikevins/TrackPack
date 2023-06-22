@@ -32,9 +32,9 @@ def throttlePositionTracker(tp_t):
     global throttlePosition
     if not tp_t.is_null():
         throttlePosition = response.value.magnitude
-#coolantTemperature = 0
-#rpm = 0
-#throttlePosition = 0
+coolantTemperature = 0
+rpm = 0
+throttlePosition = 0
 
 # Start the OBD connection and add the callbacks
 async def startOBDConnection():

@@ -39,11 +39,10 @@ def throttlePositionTracker(tp_t):
         throttlePosition = tp_t.value.magnitude
 
 # Start the OBD connection and add the callbacks
-async def startOBDConnection():
-    await connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
-    await connection.watch(obd.commands.RPM, callback=rpmTracker)
-    await connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
-    await connection.start()
+    connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
+    connection.watch(obd.commands.RPM, callback=rpmTracker)
+    connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
+    connection.start()
 
 def update():
     dataWindowCanvas.itemconfig(
@@ -217,8 +216,6 @@ def openDataWindow():
         fill="#000000",
         font=("Inter", 21 * -1)
     )
-
-    asyncio.create_task(startOBDConnection())
     update()
 
 mainWindowCanvas = Canvas(

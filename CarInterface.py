@@ -4,13 +4,13 @@ import pygame
 
 pygame.init()
 obd.logger.setLevel(obd.logging.DEBUG)
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((480, 800))
 
-connection = obd.Async("/dev/rfcomm99", protocol="6", baudrate="9600", fast=False, timeout = 30)
+connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="9600", fast=False, timeout = 30)
 
 #Continuously query until the amount of supported commands is greater than 100
 while len(connection.supported_commands) < 100:
-    connection = obd.Async("/dev/rfcomm99", protocol="6", baudrate="9600", fast=False, timeout = 30)
+    connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="9600", fast=False, timeout = 30)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

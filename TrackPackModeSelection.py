@@ -22,6 +22,7 @@ def coolantTemperatureTracker(t):
     global coolantTemperature
     if not t.is_null():
         coolantTemperature = int(t.value.magnitude)
+        print(coolantTemperature)
 
 def rpmTracker(rpm_t):
     global rpm

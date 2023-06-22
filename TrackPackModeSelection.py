@@ -175,6 +175,12 @@ def openDataWindow():
         fill="#000000",
         font=("Inter", 21 * -1)
     )
+    def update():
+        dataWindowCanvas.itemconfig(
+            ectDisplay,
+            text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
+        )
+        dataWindow.after(1000, update)
     update()
 
 obd.logger.setLevel(obd.logging.DEBUG)
@@ -210,13 +216,6 @@ def throttlePositionTracker(tp_t):
     connection.watch(obd.commands.RPM, callback=rpmTracker)
     connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
     connection.start()
-
-def update():
-    dataWindowCanvas.itemconfig(
-        ectDisplay,
-        text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
-    )
-    dataWindow.after(1000, update)
 
 mainWindowCanvas = Canvas(
     mainWindow,

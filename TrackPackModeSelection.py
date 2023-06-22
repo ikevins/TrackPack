@@ -21,7 +21,7 @@ while len(connection.supported_commands) < 100:
 def coolantTemperatureTracker(t):
     global coolantTemperature
     if not t.is_null():
-        coolantTemperature = response.value.to("degF").magnitude
+        coolantTemperature = (int)response.value.to("degF").magnitude
 
 def rpmTracker(rpm_t):
     global rpm

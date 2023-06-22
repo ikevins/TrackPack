@@ -18,6 +18,10 @@ connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=Fals
 while len(connection.supported_commands) < 100:
     connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
 
+coolantTemperature = 0
+rpm = 0
+throttlePosition = 0
+
 def coolantTemperatureTracker(t):
     global coolantTemperature
     if not t.is_null():
@@ -27,15 +31,12 @@ def coolantTemperatureTracker(t):
 def rpmTracker(rpm_t):
     global rpm
     if not rpm_t.is_null():
-        rpm = rpm_t.value.magnitude
+        rpm = int(rpm_t.value)
 
 def throttlePositionTracker(tp_t):
     global throttlePosition
     if not tp_t.is_null():
         throttlePosition = tp_t.value.magnitude
-coolantTemperature = 0
-rpm = 0
-throttlePosition = 0
 
 # Start the OBD connection and add the callbacks
 async def startOBDConnection():

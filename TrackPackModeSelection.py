@@ -10,47 +10,6 @@ mainWindow.geometry("800x480")
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
-obd.logger.setLevel(obd.logging.DEBUG)
-
-connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
-
-#Continuously query until the amount of supported commands is greater than 100
-while len(connection.supported_commands) < 100:
-    connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
-
-coolantTemperature = 0
-rpm = 0
-throttlePosition = 0
-
-def coolantTemperatureTracker(t):
-    global coolantTemperature
-    if not t.is_null():
-        coolantTemperature = int(t.value.magnitude)
-        print(coolantTemperature)
-
-def rpmTracker(rpm_t):
-    global rpm
-    if not rpm_t.is_null():
-        rpm = int(rpm_t.value)
-
-def throttlePositionTracker(tp_t):
-    global throttlePosition
-    if not tp_t.is_null():
-        throttlePosition = tp_t.value.magnitude
-
-# Start the OBD connection and add the callbacks
-    connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
-    connection.watch(obd.commands.RPM, callback=rpmTracker)
-    connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
-    connection.start()
-
-def update():
-    dataWindowCanvas.itemconfig(
-        ectDisplay,
-        text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
-    )
-    dataWindow.after(1000, update)
-
 def openDataWindow():
     dataWindow=Toplevel()
     dataWindow.geometry("800x480")
@@ -217,6 +176,47 @@ def openDataWindow():
         font=("Inter", 21 * -1)
     )
     update()
+
+obd.logger.setLevel(obd.logging.DEBUG)
+
+connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
+
+#Continuously query until the amount of supported commands is greater than 100
+while len(connection.supported_commands) < 100:
+    connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
+
+coolantTemperature = 0
+rpm = 0
+throttlePosition = 0
+
+def coolantTemperatureTracker(t):
+    global coolantTemperature
+    if not t.is_null():
+        coolantTemperature = int(t.value.magnitude)
+        print(coolantTemperature)
+
+def rpmTracker(rpm_t):
+    global rpm
+    if not rpm_t.is_null():
+        rpm = int(rpm_t.value)
+
+def throttlePositionTracker(tp_t):
+    global throttlePosition
+    if not tp_t.is_null():
+        throttlePosition = tp_t.value.magnitude
+
+# Start the OBD connection and add the callbacks
+    connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
+    connection.watch(obd.commands.RPM, callback=rpmTracker)
+    connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
+    connection.start()
+
+def update():
+    dataWindowCanvas.itemconfig(
+        ectDisplay,
+        text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
+    )
+    dataWindow.after(1000, update)
 
 mainWindowCanvas = Canvas(
     mainWindow,

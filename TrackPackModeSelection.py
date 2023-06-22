@@ -199,7 +199,6 @@ def coolantTemperatureTracker(t):
     global coolantTemperature
     if not t.is_null():
         coolantTemperature = int(t.value.magnitude)
-        print(coolantTemperature)
 
 def rpmTracker(rpm_t):
     global rpm
@@ -212,10 +211,12 @@ def throttlePositionTracker(tp_t):
         throttlePosition = tp_t.value.magnitude
 
 # Start the OBD connection and add the callbacks
-    connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
-    connection.watch(obd.commands.RPM, callback=rpmTracker)
-    connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
-    connection.start()
+connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
+connection.watch(obd.commands.RPM, callback=rpmTracker)
+connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
+connection.start()
+
+print(coolantTemperature)
 
 mainWindowCanvas = Canvas(
     mainWindow,

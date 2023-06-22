@@ -50,7 +50,7 @@ def update():
         ectDisplay,
         text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
     )
-    mainWindow.after(1000, update)
+    dataWindow.after(1000, update)
 
 def openDataWindow():
     dataWindow=Toplevel()

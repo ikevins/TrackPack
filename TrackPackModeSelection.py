@@ -103,7 +103,7 @@ def openDataWindow():
         fill="#A9A9A9",
         outline=""
         )
-    dataWindowCanvas.create_text(
+    rpmDisplay = dataWindowCanvas.create_text(
         310.0,
         136.0,
         anchor="nw",
@@ -180,6 +180,10 @@ def openDataWindow():
             ectDisplay,
             text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
         )
+        dataWindowCanvas.itemconfig(
+            rpmDisplay,
+            text="Engine Speed RPM\n\n" + str(rpm)
+        )
         dataWindow.after(1000, update)
     update()
 
@@ -203,7 +207,7 @@ def coolantTemperatureTracker(t):
 def rpmTracker(rpm_t):
     global rpm
     if not rpm_t.is_null():
-        rpm = int(rpm_t.value)
+        rpm = int(rpm_t.value.magnitude)
 
 def throttlePositionTracker(tp_t):
     global throttlePosition

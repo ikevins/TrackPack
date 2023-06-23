@@ -232,7 +232,7 @@ def openDataWindow():
         )
         dataWindowCanvas.itemconfig(
             speedDisplay,
-            text=str(throttlePosition)
+            text=str(speed)
         )
         dataWindowCanvas.itemconfig(
             throttlePositionDisplay,

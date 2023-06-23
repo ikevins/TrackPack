@@ -135,7 +135,7 @@ def openDataWindow():
         fill="#A9A9A9",
         outline=""
         )
-    dataWindowCanvas.create_text(
+    throttlePositionDisplay = dataWindowCanvas.create_text(
         45.0,
         267.0,
         anchor="nw",
@@ -184,7 +184,11 @@ def openDataWindow():
             rpmDisplay,
             text="Engine Speed RPM\n\n" + str(rpm)
         )
-        dataWindow.after(1000, update)
+        dataWindowCanvas.itemconfig(
+            throttlePositionDisplay,
+            text="Throttle Position %\n\n" + str(throttlePosition)
+        )
+        dataWindow.after(1, update)
     update()
 
 obd.logger.setLevel(obd.logging.DEBUG)

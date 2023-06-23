@@ -310,9 +310,9 @@ def oilTemperatureTracker(response):
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 connection.watch(obd.commands.RPM, callback=rpmTracker)
 connection.watch(obd.commands.SPEED, callback=speedTracker)
-connection.watch(obd.commands.RELATIVE_ACCEL_POS, callback=throttlePositionTracker)
+connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
 connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
-connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
+connection.watch(obd.commands.THROTTLE_POS, callback=oilTemperatureTracker)
 connection.start()
 
 mainWindowCanvas = Canvas(

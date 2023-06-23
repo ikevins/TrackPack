@@ -1,8 +1,6 @@
 import obd
-import asyncio
 from tkinter import *
 from tkinter import font as tkFont
-from random import randint
 
 mainWindow = Tk()
 
@@ -28,7 +26,7 @@ def openDataWindow():
     dataWindowCanvas.place(x = 0, y = 0)
     dataWindowCanvas.create_text(
         227.0,
-        31.0,
+        60.0,
         anchor="nw",
         text="TrackPack OBD-II Data",
         fill="#000000",
@@ -87,29 +85,45 @@ def openDataWindow():
         fill="#A9A9A9",
         outline=""
     )
-    ectDisplay = dataWindowCanvas.create_text(
-        55.0,
-        134.0,
+    dataWindowCanvas.create_text(
+        40.0,
+        135.0,
         anchor="nw",
-        text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature),
+        text="Engine Coolant\nTemperature (°F)",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    coolantTemperatureDisplay = dataWindowCanvas.create_text(
+        95.0,
+        195.0,
+        anchor="nw",
+        text=str(coolantTemperature),
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     dataWindowCanvas.create_rectangle(
         280.0,
-        123.0,
+        125.0,
         520.0,
         238.0,
         fill="#A9A9A9",
         outline=""
         )
-    rpmDisplay = dataWindowCanvas.create_text(
-        310.0,
-        136.0,
+    dataWindowCanvas.create_text(
+        285.0,
+        150.0,
         anchor="nw",
-        text="Engine Speed RPM\n\n" + str(rpm),
+        text="Engine Speed (RPM)",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    rpmDisplay = dataWindowCanvas.create_text(
+        360.0,
+        195.0,
+        anchor="nw",
+        text=str(rpm),
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     dataWindowCanvas.create_rectangle(
         548.0,
@@ -120,12 +134,20 @@ def openDataWindow():
         outline=""
         )
     dataWindowCanvas.create_text(
-        605.0,
-        136.0,
+        555.0,
+        150.0,
         anchor="nw",
-        text="Air/Fuel Ratio",
+        text="Vehicle Speed (MPH)",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    speedDisplay = dataWindowCanvas.create_text(
+        650.0,
+        195.0,
+        anchor="nw",
+        text=str(speed),
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     dataWindowCanvas.create_rectangle(
         10.0,
@@ -134,14 +156,22 @@ def openDataWindow():
         372.0,
         fill="#A9A9A9",
         outline=""
-        )
-    throttlePositionDisplay = dataWindowCanvas.create_text(
-        45.0,
-        267.0,
+    )
+    dataWindowCanvas.create_text(
+        35.0,
+        282.0,
         anchor="nw",
-        text="Throttle Position %\n\n" + str(throttlePosition),
+        text="Throttle Position",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    throttlePositionDisplay = dataWindowCanvas.create_text(
+        100.0,
+        327.0,
+        anchor="nw",
+        text=str(throttlePosition) + "%",
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     dataWindowCanvas.create_rectangle(
         279.0,
@@ -152,12 +182,20 @@ def openDataWindow():
         outline=""
         )
     dataWindowCanvas.create_text(
-        316.0,
-        267.0,
+        340.0,
+        282.0,
         anchor="nw",
-        text="Oil Pressure PSI",
+        text="Fuel Level",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    fuelLevelDisplay = dataWindowCanvas.create_text(
+        370.0,
+        327.0,
+        anchor="nw",
+        text=str(fuelLevel) + "%",
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     dataWindowCanvas.create_rectangle(
         548.0,
@@ -168,25 +206,45 @@ def openDataWindow():
         outline=""
         )
     dataWindowCanvas.create_text(
-        580.0,
-        267.0,
+        560.0,
+        282.0,
         anchor="nw",
-        text="Oil Temperature °F",
+        text="Oil Temperature (°F)",
         fill="#000000",
-        font=("Inter", 21 * -1)
+        font=("Inter", 24 * -1)
+    )
+    oilTemperatureDisplay = dataWindowCanvas.create_text(
+        640.0,
+        327.0,
+        anchor="nw",
+        text=str(oilTemperature),
+        fill="#000000",
+        font=("Inter", 32 * -1)
     )
     def update():
         dataWindowCanvas.itemconfig(
-            ectDisplay,
-            text="Engine Coolant \nTemperature °F\n\n" + str(coolantTemperature)
+            coolantTemperatureDisplay,
+            text=str(coolantTemperature)
         )
         dataWindowCanvas.itemconfig(
             rpmDisplay,
-            text="Engine Speed RPM\n\n" + str(rpm)
+            text=str(rpm)
+        )
+        dataWindowCanvas.itemconfig(
+            speedDisplay,
+            text=str(throttlePosition)
         )
         dataWindowCanvas.itemconfig(
             throttlePositionDisplay,
-            text="Throttle Position %\n\n" + str(throttlePosition)
+            text=str(throttlePosition) + "%"
+        )
+        dataWindowCanvas.itemconfig(
+            fuelLevelDisplay,
+            text=str(fuelLevel) + "%"
+        )
+        dataWindowCanvas.itemconfig(
+            oilTemperatureDisplay,
+            text=str(oilTemperature)
         )
         dataWindow.after(1, update)
     update()
@@ -201,30 +259,61 @@ while len(connection.supported_commands) < 100:
 
 coolantTemperature = 0
 rpm = 0
+speed = 0
 throttlePosition = 0
+fuelLevel = 0
+oilTemperature = 0
 
-def coolantTemperatureTracker(t):
+def coolantTemperatureTracker(response):
     global coolantTemperature
-    if not t.is_null():
-        coolantTemperature = int(t.value.magnitude)
+    if not response.is_null():
+        coolantTemperature = int((response.value.magnitude * (9/5)) + 32)
+    else:
+        coolantTemperature = "N/A"
 
-def rpmTracker(rpm_t):
+def rpmTracker(response):
     global rpm
-    if not rpm_t.is_null():
-        rpm = int(rpm_t.value.magnitude)
+    if not response.is_null():
+        rpm = int(response.value.magnitude)
+    else:
+        rpm = "N/A"
 
-def throttlePositionTracker(tp_t):
+def speedTracker(response):
+    global speed
+    if not response.is_null():
+        speed = int(response.value.magnitude / 1.609344)
+    else:
+        speed = "N/A"
+
+def throttlePositionTracker(response):
     global throttlePosition
-    if not tp_t.is_null():
-        throttlePosition = tp_t.value.magnitude
+    if not response.is_null():
+        throttlePosition = int(response.value.magnitude)
+    else:
+        throttlePosition = "N/A"
+
+def fuelLevelTracker(response):
+    global fuelLevel
+    if not response.is_null():
+        fuelLevel = int(response.value.magnitude)
+    else:
+        fuelLevel = "N/A"
+
+def oilTemperatureTracker(response):
+    global oilTemperature
+    if not response.is_null():
+        oilTemperature = int((response.value.magnitude * (9/5)) + 32)
+    else:
+        oilTemperature = "N/A"
 
 # Start the OBD connection and add the callbacks
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 connection.watch(obd.commands.RPM, callback=rpmTracker)
-connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
+connection.watch(obd.commands.SPEED, callback=speedTracker)
+connection.watch(obd.commands.RELATIVE_THROTTLE_POS, callback=throttlePositionTracker)
+connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
+connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
 connection.start()
-
-print(coolantTemperature)
 
 mainWindowCanvas = Canvas(
     mainWindow,

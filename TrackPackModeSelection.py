@@ -4,13 +4,15 @@ from tkinter import font as tkFont
 
 mainWindow = Tk()
 
-mainWindow.geometry("800x480")
+#mainWindow.geometry("800x480")
+mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
 def openDataWindow():
     dataWindow=Toplevel()
-    dataWindow.geometry("800x480")
+    #dataWindow.geometry("800x480")
+    dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 
@@ -312,7 +314,7 @@ connection.watch(obd.commands.RPM, callback=rpmTracker)
 connection.watch(obd.commands.SPEED, callback=speedTracker)
 connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
 connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
-connection.watch(obd.commands.THROTTLE_POS, callback=oilTemperatureTracker)
+connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
 connection.start()
 
 mainWindowCanvas = Canvas(

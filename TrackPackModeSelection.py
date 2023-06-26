@@ -308,6 +308,15 @@ def oilTemperatureTracker(response):
     else:
         oilTemperature = "N/A"
 
+def statusTracker(response):
+    if not response.is_null():
+        print("Is the CEL on?" + response.value.MIL)
+        print("CEL codes present: " + response.value.DTC_count)
+
+def dtcTracker(response):
+    if not response.is_null():
+        print(response.value)
+
 # Start the OBD connection and add the callbacks
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 connection.watch(obd.commands.RPM, callback=rpmTracker)
@@ -315,6 +324,8 @@ connection.watch(obd.commands.SPEED, callback=speedTracker)
 connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
 connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
 connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
+connection.watch(obd.commands.STATUS, callback=statusTracker)
+connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
 connection.start()
 
 mainWindowCanvas = Canvas(

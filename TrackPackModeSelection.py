@@ -4,15 +4,15 @@ from tkinter import font as tkFont
 
 mainWindow = Tk()
 
-#mainWindow.geometry("800x480")
-mainWindow.attributes('-fullscreen',True)
+mainWindow.geometry("800x480")
+#mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
 def openDataWindow():
     dataWindow=Toplevel()
-    #dataWindow.geometry("800x480")
-    dataWindow.attributes('-fullscreen',True)
+    dataWindow.geometry("800x480")
+    #dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 

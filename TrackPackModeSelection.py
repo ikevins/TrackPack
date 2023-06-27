@@ -4,15 +4,131 @@ from tkinter import font as tkFont
 
 mainWindow = Tk()
 
-mainWindow.geometry("800x480")
-#mainWindow.attributes('-fullscreen',True)
+#mainWindow.geometry("800x480")
+mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
+def exit(e):
+    mainWindow.destroy()
+
+def checkDTC():
+    if malfunctionIndicatorLight == True and CEL_count > 0:
+        openDTCWindow()
+    else:
+        openNoDTCWindow()
+
+def openDTCWindow():
+    DTCWindow=Toplevel()
+    #DTCWindow.geometry("800x480")
+    DTCWindow.attributes('-fullscreen',True)
+    DTCWindow.title("TrackPack Diagnostic Information")
+    DTCWindow.configure(bg = "#FFFFFF")
+
+    DTCWindowCanvas = Canvas(
+        DTCWindow,
+        bg = "#FFFFFF",
+        height = 480,
+        width = 800,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
+    DTCWindowCanvas.place(x = 0, y = 0)
+    DTCWindowCanvas.create_text(
+        204.0,
+        34.0,
+        anchor="nw",
+        text="TrackPack Diagnostic Info",
+        fill="#000000",
+        font=("Inter", 32 * -1)
+    )
+    goBackButton = Button(
+        DTCWindow,
+        text="Go Back",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=DTCWindow.destroy,
+        relief="flat"
+    )
+    goBackButton.place(
+        x=5.0,
+        y=17.0,
+        width=160.0,
+        height=35.0
+    )
+
+    rectangleTopLeftYPosition = 91
+    rectangleBottomRightYPosition = 132
+    textYPosition = 94
+
+    for i in range(len(currentDTCs)):
+            DTCWindowCanvas.create_rectangle(
+                5.0, #Top-left X-axis
+                rectangleTopLeftYPosition, #Top-left Y-axis
+                795.0, #Bottom-right X-axis
+                rectangleBottomRightYPosition, #Bottom-right Y-axis
+                fill="#D3D3D3",
+                outline=""
+                )
+            DTCWindowCanvas.create_text(
+                20.0,
+                textYPosition,
+                anchor="nw",
+                text=currentDTCs[i],
+                fill="#000000",
+                font=("Inter", 32 * -1)
+            )
+            rectangleTopLeftYPosition += 45
+            rectangleBottomRightYPosition += 45
+            textYPosition += 45
+
+def openNoDTCWindow():
+    noDTCWindow=Toplevel()
+    #noDTCWindow.geometry("800x480")
+    noDTCWindow.attributes('-fullscreen',True)
+    noDTCWindow.title("TrackPack Diagnostic Information")
+    noDTCWindow.configure(bg = "#FFFFFF")
+
+    noDTCWindowCanvas = Canvas(
+        noDTCWindow,
+        bg = "#FFFFFF",
+        height = 480,
+        width = 800,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
+    noDTCWindowCanvas.place(x = 0, y = 0)
+    noDTCWindowCanvas.create_text(
+        254.0,
+        168.0,
+        anchor="nw",
+        text="No DTCs Detected.",
+        fill="#000000",
+        font=("Inter", 32 * -1)
+    )
+    okButton = Button(
+        noDTCWindow,
+        text="OK",
+        font=("Inter", 24 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=noDTCWindow.destroy,
+        relief="flat"
+    )
+    okButton.place(
+        x=320.0,
+        y=222.0,
+        width=160.0,
+        height=57.0
+    )
+
 def openDataWindow():
     dataWindow=Toplevel()
-    dataWindow.geometry("800x480")
-    #dataWindow.attributes('-fullscreen',True)
+    #dataWindow.geometry("800x480")
+    dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 
@@ -70,7 +186,7 @@ def openDataWindow():
         font=("Inter", 21 * -1),
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_3 clicked"),
+        command=checkDTC,
         relief="flat"
     )
     diagInfoButton.place(
@@ -265,57 +381,51 @@ speed = 0
 throttlePosition = 0
 fuelLevel = 0
 oilTemperature = 0
+malfunctionIndicatorLight = True
+CEL_count = 2
+currentDTCs = []
 
 def coolantTemperatureTracker(response):
     global coolantTemperature
     if not response.is_null():
         coolantTemperature = int((response.value.magnitude * (9/5)) + 32)
-    else:
-        coolantTemperature = "N/A"
 
 def rpmTracker(response):
     global rpm
     if not response.is_null():
         rpm = int(response.value.magnitude)
-    else:
-        rpm = "N/A"
 
 def speedTracker(response):
     global speed
     if not response.is_null():
         speed = int(response.value.magnitude / 1.609344)
-    else:
-        speed = "N/A"
 
 def throttlePositionTracker(response):
     global throttlePosition
     if not response.is_null():
         throttlePosition = int(response.value.magnitude)
-    else:
-        throttlePosition = "N/A"
 
 def fuelLevelTracker(response):
     global fuelLevel
     if not response.is_null():
         fuelLevel = int(response.value.magnitude)
-    else:
-        fuelLevel = "N/A"
 
 def oilTemperatureTracker(response):
     global oilTemperature
     if not response.is_null():
         oilTemperature = int((response.value.magnitude * (9/5)) + 32)
-    else:
-        oilTemperature = "N/A"
 
 def statusTracker(response):
+    global malfunctionIndicatorLight
+    global CEL_count
     if not response.is_null():
-        print("Is the CEL on?" + response.value.MIL)
-        print("CEL codes present: " + response.value.DTC_count)
+        malfunctionIndicatorLight = response.value.MIL
+        CEL_count = response.value.DTC_count
 
 def dtcTracker(response):
+    global currentDTCs
     if not response.is_null():
-        print(response.value)
+        currentDTCs = response.value
 
 # Start the OBD connection and add the callbacks
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
@@ -324,7 +434,7 @@ connection.watch(obd.commands.SPEED, callback=speedTracker)
 connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
 connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
 connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
-connection.watch(obd.commands.Status, callback=statusTracker)
+connection.watch(obd.commands.STATUS, callback=statusTracker)
 connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
 connection.start()
 
@@ -392,4 +502,5 @@ mainWindowCanvas.create_text(
     fill="#000000",
     font=("Inter", 48 * -1)
 )
+mainWindow.bind('<Escape>', exit)
 mainWindow.mainloop()

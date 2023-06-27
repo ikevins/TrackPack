@@ -324,7 +324,7 @@ connection.watch(obd.commands.SPEED, callback=speedTracker)
 connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
 connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
 connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
-connection.watch(obd.commands.STATUS, callback=statusTracker)
+connection.watch(obd.commands.Status, callback=statusTracker)
 connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
 connection.start()
 

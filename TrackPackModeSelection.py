@@ -381,8 +381,8 @@ speed = 0
 throttlePosition = 0
 fuelLevel = 0
 oilTemperature = 0
-malfunctionIndicatorLight = True
-CEL_count = 2
+malfunctionIndicatorLight = False
+CEL_count = 0
 currentDTCs = []
 
 def coolantTemperatureTracker(response):

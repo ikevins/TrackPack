@@ -3,6 +3,12 @@ import random
 import time
 from tkinter import *
 from tkinter import font as tkFont
+from picamera import PiCamera
+import time
+camera = PiCamera()
+camera.resolution = (1280, 720)
+camera.vflip = False
+camera.contrast = 10
 
 mainWindow = Tk()
 
@@ -299,6 +305,7 @@ def openBeginLoggingWindow():
             )
         if ((round(distanceTravelled, 4) == 0.250) and quarterMileComplete == False):
             quarterMileTime = elapsedTime
+            camera.stop_recording()
             quarterMileComplete = True
             #print(quarterMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
@@ -337,6 +344,7 @@ def openParameterLoggingWindow():
                 else:
                     ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
                     openBeginLoggingWindow()
+                    camera.start_recording(/home/ikevins/Desktop/testvideo.h264)
             beginLoggingButton.destroy()
             countdownText = ParameterLoggingWindowCanvas.create_text(
                 390.0,

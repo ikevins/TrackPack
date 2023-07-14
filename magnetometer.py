@@ -21,7 +21,7 @@ while True:
     mag_z = mag_z if mag_z < 32768 else mag_z - 65536
 
     # Convert the magnetometer data to magnetic field values
-    mag_x = mag_x * 0.00014  # sensitivity: 0.14 Tesla/LSB
+    mag_x = mag_x * 0.00014  # sensitivity: 0.14 Gauss/LSB
     mag_y = mag_y * 0.00014
     mag_z = mag_z * 0.00014
 
@@ -32,6 +32,10 @@ while True:
 
     # Convert the heading angle to degrees
     heading_degrees = math.degrees(heading)
+
+    # Adjust the heading degrees to be in the range of 0-360
+    if heading_degrees < 0:
+        heading_degrees += 360
 
     # Determine the cardinal direction
     if 45 <= heading_degrees < 135:

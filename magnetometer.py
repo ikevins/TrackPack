@@ -15,8 +15,13 @@ while True:
     mag_y = bus.read_word_data(address, 0x2A)
     mag_z = bus.read_word_data(address, 0x2C)
 
-    # Convert the raw data to magnetic field values
-    mag_x = mag_x * 0.00014  # sensitivity: 0.14 µT/LSB
+    # Convert the raw data to signed integers
+    mag_x = mag_x if mag_x < 32768 else mag_x - 65536
+    mag_y = mag_y if mag_y < 32768 else mag_y - 65536
+    mag_z = mag_z if mag_z < 32768 else mag_z - 65536
+
+    # Convert the magnetometer data to magnetic field values
+    mag_x = mag_x * 0.00014  # sensitivity: 0.14 Tesla/LSB
     mag_y = mag_y * 0.00014
     mag_z = mag_z * 0.00014
 

@@ -1,21 +1,21 @@
 import smbus
+import time
 
-# Define LSM6DSL registers
-CTRL1_XL = 0x10  # Control register for accelerometer
-OUTX_L_XL = 0x28  # Output register for accelerometer data (X-axis)
-
-# Initialize I2C bus (replace 1 with the appropriate bus number)
 bus = smbus.SMBus(1)
-
-# Set the device address (6B in your case)
 address = 0x6B
 
-# Configure LSM6DSL
-bus.write_byte_data(address, CTRL1_XL, 0x80)  # Enable accelerometer
+while True:
+    # Read accelerometer data
+    accel_x = bus.read_word_data(address, 0x28)
+    accel_y = bus.read_word_data(address, 0x2A)
+    accel_z = bus.read_word_data(address, 0x2C)
 
-# Read accelerometer data
-data_x_l = bus.read_byte_data(address, OUTX_L_XL)
-data_x_h = bus.read_byte_data(address, OUTX_L_XL + 1)
-acceleration = (data_x_h << 8) | data_x_l
+    # Convert the raw data to acceleration values
+    accel_x = accel_x / 16384.0
+    accel_y = accel_y / 16384.0
+    accel_z = accel_z / 16384.0
 
-print(f"Acceleration: {acceleration}")
+    # Print the acceleration values
+    print("Acceleration (g): X = {:.2f}, Y = {:.2f}, Z = {:.2f}".format(accel_x, accel_y, accel_z))
+
+    time.sleep(0.1)  # Wait for a while before reading again

@@ -1,20 +1,21 @@
 import smbus
 
-bus = smbus.SMBus(1)  # Use 0 for older Raspberry Pi boards
+# Define LSM6DSL registers
+CTRL1_XL = 0x10  # Control register for accelerometer
+OUTX_L_XL = 0x28  # Output register for accelerometer data (X-axis)
 
-# LSM6DSL I2C address
-address = 0x6A
+# Initialize I2C bus (replace 1 with the appropriate bus number)
+bus = smbus.SMBus(1)
 
-# Accelerometer and gyroscope registers
-acc_reg = 0x28
-gyro_reg = 0x22
+# Set the device address (6B in your case)
+address = 0x6B
+
+# Configure LSM6DSL
+bus.write_byte_data(address, CTRL1_XL, 0x80)  # Enable accelerometer
 
 # Read accelerometer data
-acc_data = bus.read_i2c_block_data(address, acc_reg, 6)
+data_x_l = bus.read_byte_data(address, OUTX_L_XL)
+data_x_h = bus.read_byte_data(address, OUTX_L_XL + 1)
+acceleration = (data_x_h << 8) | data_x_l
 
-# Read gyroscope data
-gyro_data = bus.read_i2c_block_data(address, gyro_reg, 6)
-
-# Process and print the data
-print("Accelerometer: ", acc_data)
-print("Gyroscope: ", gyro_data)
+print(f"Acceleration: {acceleration}")

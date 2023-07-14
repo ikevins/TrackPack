@@ -11,9 +11,9 @@ bus.write_byte_data(address, 0x20, 0x00)  # Set configuration register to contin
 
 while True:
     # Read magnetometer data
-    mag_x = bus.read_word_data(address, 0x28)
-    mag_y = bus.read_word_data(address, 0x2A)
-    mag_z = bus.read_word_data(address, 0x2C)
+    mag_x = bus.read_word_data(address, 0x28) | (bus.read_byte_data(address, 0x29) << 8)
+    mag_y = bus.read_word_data(address, 0x2A) | (bus.read_byte_data(address, 0x2B) << 8)
+    mag_z = bus.read_word_data(address, 0x2C) | (bus.read_byte_data(address, 0x2D) << 8)
 
     # Convert the raw data to signed integers
     mag_x = mag_x if mag_x < 32768 else mag_x - 65536

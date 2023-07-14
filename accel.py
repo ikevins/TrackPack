@@ -15,7 +15,13 @@ while True:
     accel_y = accel_y / 16384.0
     accel_z = accel_z / 16384.0
 
-    # Print the acceleration values
-    print("Acceleration (g): X = {:.2f}, Y = {:.2f}, Z = {:.2f}".format(accel_x, accel_y, accel_z))
+    # Convert acceleration values to force in "g"
+    gravity = 9.8  # Acceleration due to gravity in m/s^2
+    force_x = accel_x / gravity
+    force_y = accel_y / gravity
+    force_z = accel_z / gravity
+
+    # Print the force values
+    print("Force (g): X = {:.2f}, Y = {:.2f}, Z = {:.2f}".format(force_x, force_y, force_z))
 
     time.sleep(0.1)  # Wait for a while before reading again

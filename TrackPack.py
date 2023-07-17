@@ -144,7 +144,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     eighthMileStats = BeginLoggingWindowCanvas.create_text(
-        400.0,
+        415.0,
         220.0,
         anchor="nw",
         fill="#000000",
@@ -647,7 +647,7 @@ def openStoredLogWindow(logs):
         outline=""
     )
     StoredLogWindowCanvas.create_text(
-        185.0,
+        215.0,
         50.0,
         anchor="nw",
         text="TrackPack Log: " + logs[1] + "/" + logs[2] + "/" + logs[3],
@@ -828,9 +828,9 @@ def openStoredLogWindow(logs):
         89.0,
         415.0,
         anchor="center",
-        text="mph\n (top speed)",
+        text="mph\n (Top Speed)",
         fill="#000000",
-        font=("Inter", 24 * -1),
+        font=("Inter", 20 * -1),
         justify="center"
     )
     goBackButton = Button(
@@ -940,7 +940,7 @@ def openNoDTCWindow():
     )
     noDTCWindowCanvas.place(x = 0, y = 0)
     noDTCWindowCanvas.create_text(
-        254.0,
+        265.0,
         168.0,
         anchor="nw",
         text="No DTCs Detected.",
@@ -1004,6 +1004,557 @@ def openVehicleMovingWindow():
         height=57.0
     )
 
+def openMoreDataWindow():
+    dataWindow=Toplevel()
+    dataWindow.geometry("800x480")
+    #dataWindow.attributes('-fullscreen',True)
+    dataWindow.title("TrackPack OBD-II Data")
+    dataWindow.configure(bg = "#FFFFFF")
+
+    def on_canvas_scroll(event):
+        dataWindowCanvas.yview_scroll(-1 * int(event.delta / 120), "units")
+
+    def on_canvas_touch_scroll(event):
+        dataWindowCanvas.yview_scroll(-1 * event.delta, "units")
+
+    dataWindowCanvas = Canvas(
+        dataWindow,
+        bg = "#FFFFFF",
+        height = 480,
+        width = 800,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
+
+    scrollbar = Scrollbar(dataWindow, orient=VERTICAL, command=dataWindowCanvas.yview)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    dataWindowCanvas.configure(yscrollcommand=scrollbar.set)
+    frame = Frame(dataWindowCanvas, bg="#FFFFFF")
+    dataWindowCanvas.create_window((0, 0), window=frame, anchor="nw")
+    dataWindowCanvas.bind("<MouseWheel>", on_canvas_scroll)
+    dataWindowCanvas.bind("<MouseWheel>", on_canvas_touch_scroll)
+    dataWindowCanvas.bind("<Configure>", lambda event: dataWindowCanvas.configure(scrollregion=dataWindowCanvas.bbox("all")))
+
+    dataWindowCanvas.place(x = 0, y = 0)
+    dataWindowCanvas.create_text(
+        227.0,
+        60.0,
+        anchor="nw",
+        text="TrackPack OBD-II Data",
+        fill="#000000",
+        font=("Inter", 32 * -1)
+    )
+    goBackButton = Button(
+        dataWindow,
+        text="Go Back",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=dataWindow.destroy,
+        relief="flat"
+    )
+    goBackButton.place(
+        x=10.0,
+        y=20.0,
+        width=160.0,
+        height=35.0
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        119.0,
+        800.0,
+        149.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    speedDisplay = dataWindowCanvas.create_text(
+        605.0,
+        119.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        119.0,
+        600.0,
+        149.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        119.0,
+        anchor="nw",
+        text="Speed",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        149.0,
+        800.0,
+        179.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    rpmDisplay = dataWindowCanvas.create_text(
+        605.0,
+        149.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        149.0,
+        600.0,
+        179.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        149.0,
+        anchor="nw",
+        text="RPM",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        179.0,
+        800.0,
+        209.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    engineLoadDisplay = dataWindowCanvas.create_text(
+        605.0,
+        179.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        179.0,
+        600.0,
+        209.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        179.0,
+        anchor="nw",
+        text="Load Percentage (%)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        209.0,
+        800.0,
+        239.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    coolantTemperatureDisplay = dataWindowCanvas.create_text(
+        605.0,
+        209.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        209.0,
+        600.0,
+        239.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        209.0,
+        anchor="nw",
+        text="Engine Coolant Temperature (°F)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        239.0,
+        800.0,
+        269.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    shortFuelTrim1Display = dataWindowCanvas.create_text(
+        605.0,
+        239.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        239.0,
+        600.0,
+        269.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        239.0,
+        anchor="nw",
+        text="Short Term Fuel Trim Bank 1 (%)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        269.0,
+        800.0,
+        299.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    longFuelTrim1Display = dataWindowCanvas.create_text(
+        605.0,
+        269.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        269.0,
+        600.0,
+        299.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        269.0,
+        anchor="nw",
+        text="Long Term Fuel Trim Bank 1 (%)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        299.0,
+        800.0,
+        329.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    shortFuelTrim2Display = dataWindowCanvas.create_text(
+        605.0,
+        299.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        299.0,
+        600.0,
+        329.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        299.0,
+        anchor="nw",
+        text="Short Term Fuel Trim Bank 2 (%)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        329.0,
+        800.0,
+        359.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    longFuelTrim2Display = dataWindowCanvas.create_text(
+        605.0,
+        329.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        329.0,
+        600.0,
+        359.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        329.0,
+        anchor="nw",
+        text="Long Term Fuel Trim Bank 2 (%)",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        359.0,
+        800.0,
+        389.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    mafDisplay = dataWindowCanvas.create_text(
+        605.0,
+        359.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        359.0,
+        600.0,
+        389.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        359.0,
+        anchor="nw",
+        text="Air Flow Rate",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        389.0,
+        800.0,
+        419.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    oilTemperatureDisplay = dataWindowCanvas.create_text(
+        605.0,
+        389.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        389.0,
+        600.0,
+        419.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        389.0,
+        anchor="nw",
+        text="Oil Temperature",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        419.0,
+        600.0,
+        449.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        419.0,
+        800.0,
+        449.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    fuelTypeDisplay = dataWindowCanvas.create_text(
+        605.0,
+        419.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        419.0,
+        anchor="nw",
+        text="Fuel Type",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        449.0,
+        800.0,
+        479.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    evapPressureDisplay = dataWindowCanvas.create_text(
+        605.0,
+        449.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        449.0,
+        600.0,
+        480.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        449.0,
+        anchor="nw",
+        text="Evaporative System Vapor Pressure",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        479.0,
+        800.0,
+        510.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    throttlePositionDisplay = dataWindowCanvas.create_text(
+        605.0,
+        479.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        479.0,
+        600.0,
+        510.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        479.0,
+        anchor="nw",
+        text="Throttle Position",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        600.0,
+        509.0,
+        800.0,
+        540.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    fuelLevelDisplay = dataWindowCanvas.create_text(
+        605.0,
+        509.0,
+        anchor="nw",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    dataWindowCanvas.create_rectangle(
+        0.0,
+        509.0,
+        600.0,
+        540.0,
+        fill="#EDECEB",
+        outline="#000000"
+    )
+    dataWindowCanvas.create_text(
+        5.0,
+        509.0,
+        anchor="nw",
+        text="Fuel Level",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    def update():
+        dataWindowCanvas.itemconfig(
+            speedDisplay,
+            text=str(speed)
+        )
+        dataWindowCanvas.itemconfig(
+            rpmDisplay,
+            text=str(rpm)
+        )
+        dataWindowCanvas.itemconfig(
+            engineLoadDisplay,
+            text=str(engineLoad)
+        )
+        dataWindowCanvas.itemconfig(
+            coolantTemperatureDisplay,
+            text=str(coolantTemperature)
+        )
+        dataWindowCanvas.itemconfig(
+            shortFuelTrim1Display,
+            text=str(shortFuelTrim1)
+        )
+        dataWindowCanvas.itemconfig(
+            longFuelTrim1Display,
+            text=str(longFuelTrim1)
+        )
+        dataWindowCanvas.itemconfig(
+            shortFuelTrim2Display,
+            text=str(shortFuelTrim2)
+        )
+        dataWindowCanvas.itemconfig(
+            longFuelTrim2Display,
+            text=str(longFuelTrim2)
+        )
+        dataWindowCanvas.itemconfig(
+            oilTemperatureDisplay,
+            text=str(oilTemperature)
+        )
+        dataWindowCanvas.itemconfig(
+            mafDisplay,
+            text=str(maf)
+        )
+        dataWindowCanvas.itemconfig(
+            fuelTypeDisplay,
+            text=str(fuelType)
+        )
+        dataWindowCanvas.itemconfig(
+            evapPressureDisplay,
+            text=str(evapPressure)
+        )
+        dataWindowCanvas.itemconfig(
+            throttlePositionDisplay,
+            text=str(throttlePosition) + "%"
+        )
+        dataWindowCanvas.itemconfig(
+            fuelLevelDisplay,
+            text=str(fuelLevel) + "%"
+        )
+        dataWindow.after(1, update)
+    update()
+    dataWindowCanvas.pack(side=LEFT, fill=BOTH, expand=True)
+
 def openDataWindow():
     dataWindow=Toplevel()
     dataWindow.geometry("800x480")
@@ -1050,7 +1601,7 @@ def openDataWindow():
         font=("Inter", 21 * -1),
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_2 clicked"),
+        command=openMoreDataWindow,
         relief="flat"
     )
     moreDataButton.place(
@@ -1091,7 +1642,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     coolantTemperatureDisplay = dataWindowCanvas.create_text(
-        95.0,
+        115.0,
         195.0,
         anchor="nw",
         text=str(coolantTemperature),
@@ -1115,7 +1666,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     rpmDisplay = dataWindowCanvas.create_text(
-        360.0,
+        390.0,
         195.0,
         anchor="nw",
         text=str(rpm),
@@ -1139,7 +1690,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     speedDisplay = dataWindowCanvas.create_text(
-        650.0,
+        660.0,
         195.0,
         anchor="nw",
         text=str(speed),
@@ -1163,7 +1714,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     throttlePositionDisplay = dataWindowCanvas.create_text(
-        100.0,
+        115.0,
         327.0,
         anchor="nw",
         text=str(throttlePosition) + "%",
@@ -1179,7 +1730,7 @@ def openDataWindow():
         outline=""
         )
     dataWindowCanvas.create_text(
-        340.0,
+        345.0,
         282.0,
         anchor="nw",
         text="Fuel Level",
@@ -1187,7 +1738,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     fuelLevelDisplay = dataWindowCanvas.create_text(
-        370.0,
+        390.0,
         327.0,
         anchor="nw",
         text=str(fuelLevel) + "%",
@@ -1211,7 +1762,7 @@ def openDataWindow():
         font=("Inter", 24 * -1)
     )
     oilTemperatureDisplay = dataWindowCanvas.create_text(
-        640.0,
+        660.0,
         327.0,
         anchor="nw",
         text=str(oilTemperature),
@@ -1261,6 +1812,16 @@ speedTotal = 0
 throttlePosition = 0
 fuelLevel = 0
 oilTemperature = 0
+engineLoad = 0
+shortFuelTrim1 = 0
+longFuelTrim1 = 0
+shortFuelTrim2 = 0
+longFuelTrim2 = 0
+fuelPressure = 0
+intakePressure = 0
+maf = 0
+fuelType = 93
+evapPressure = 0
 malfunctionIndicatorLight = False
 CEL_count = 0
 currentDTCs = []
@@ -1318,6 +1879,56 @@ def dtcTracker(response):
     if not response.is_null():
         currentDTCs = response.value
 
+def engineLoadTracker(response):
+    global engineLoad
+    if not response.is_null():
+        engineLoad = int(response.value.magnitude)
+
+def shortFuelTrim1Tracker (response):
+    global shortFuelTrim1
+    if not response.is_null():
+        shortFuelTrim1 = int(response.value.magnitude)
+
+def longFuelTrim1Tracker (response):
+    global longFuelTrim1
+    if not response.is_null():
+        longFuelTrim1 = int(response.value.magnitude)
+
+def shortFuelTrim2Tracker (response):
+    global shortFuelTrim2
+    if not response.is_null():
+        shortFuelTrim2 = int(response.value.magnitude)
+
+def longFuelTrim2Tracker (response):
+    global longFuelTrim2
+    if not response.is_null():
+        longFuelTrim2 = int(response.value.magnitude)
+
+def fuelPressureTracker (response):
+    global fuelPressure
+    if not response.is_null():
+        fuelPressure = int(response.value.magnitude)
+
+def intakePressureTracker (response):
+    global intakePressure
+    if not response.is_null():
+        intakePressure = int(response.value.magnitude)
+
+def mafTracker (response):
+    global maf
+    if not response.is_null():
+        maf = int(response.value.magnitude)
+
+def fuelTypeList (response):
+    global fuelType
+    if not response.is_null():
+        fuelType = int(response.value.magnitude)
+
+def evapTracker (response):
+    global evapPressure
+    if not response.is_null():
+        evapPressure = int(response.value.magnitude)
+
 # Start the OBD connection and add the callbacks
 #connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 #connection.watch(obd.commands.RPM, callback=rpmTracker)
@@ -1327,6 +1938,17 @@ def dtcTracker(response):
 #connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
 #connection.watch(obd.commands.STATUS, callback=statusTracker)
 #connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
+#connection.watch(obd.commands., callback=)
+#connection.watch(obd.commands.ENGINE_LOAD, callback=engineLoadTracker)
+#connection.watch(obd.commands.SHORT_FUEL_TRIM_1, callback=shortFuelTrim1Tracker)
+#connection.watch(obd.commands.LONG_FUEL_TRIM_1	, callback=longFuelTrim1Tracker)
+#connection.watch(obd.commands.SHORT_FUEL_TRIM_2, callback=shortFuelTrim2Tracker)
+#connection.watch(obd.commands.LONG_FUEL_TRIM_2	, callback=longFuelTrim2Tracker)
+#connection.watch(obd.commands.FUEL_PRESSURE, callback=fuelPressureTracker)
+#connection.watch(obd.commands.INTAKE_PRESSURE, callback=intakePressureTracker)
+#connection.watch(obd.commands.MAF, callback=mafTracker)
+#connection.watch(obd.commands.FUEL_TYPE, callback=fuelTypeList)
+#connection.watch(obd.commands.EVAP_VAPOR_PRESSURE, callback=evapTracker)
 #connection.start()
 
 mainWindowCanvas = Canvas(

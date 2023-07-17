@@ -1,5 +1,6 @@
 import smbus
 import time
+import math
 
 # I2C address of the LSM6DSL accelerometer
 I2C_ADDRESS = 0x6B
@@ -48,7 +49,7 @@ try:
         g_z = z / 16384.0
 
         # Calculate the total g-force
-        g_total = (g_x ** 2 + g_y ** 2 + g_z ** 2) ** 0.5
+        g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2)
 
         # Print the g-force values
         print(f"X: {g_x:.2f}g, Y: {g_y:.2f}g, Z: {g_z:.2f}g, Total: {g_total:.2f}g")

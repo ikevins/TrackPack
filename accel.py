@@ -61,7 +61,7 @@ try:
         g_total = max(0, g_total)
 
         # Print the g-force values
-        print(f"X: {g_x:.2f}g, Y: {g_y:.2f}g, Z: {g_z:.2f}g, Total: {g_total:.2f}g")
+        print(f"X: {g_x:.2f}g, Y: {g_y:.2f}g, Z: {g_z:.2f}g, Total: {g_total:.1f}g")
 
         # Wait for a moment
         time.sleep(0.1)

@@ -82,19 +82,19 @@ def inertialMeasurementUnit():
         accelerometer_x = (accelerometer_x_h << 8 | accelerometer_x_l)
         if accelerometer_x > 32767:
             accelerometer_x -= 65536
-            accelerometer_y = (accelerometer_y_h << 8 | accelerometer_y_l)
+        accelerometer_y = (accelerometer_y_h << 8 | accelerometer_y_l)
         if accelerometer_y > 32767:
             accelerometer_y -= 65536
-            accelerometer_z = (accelerometer_z_h << 8 | accelerometer_z_l)
+        accelerometer_z = (accelerometer_z_h << 8 | accelerometer_z_l)
         if accelerometer_z > 32767:
             accelerometer_z -= 65536
-            magnetometer_x = (magnetometer_x_h << 8 | magnetometer_x_l)
+        magnetometer_x = (magnetometer_x_h << 8 | magnetometer_x_l)
         if magnetometer_x > 32767:
             magnetometer_x -= 65536
-            magnetometer_y = (magnetometer_y_h << 8 | magnetometer_y_l)
+        magnetometer_y = (magnetometer_y_h << 8 | magnetometer_y_l)
         if magnetometer_y > 32767:
             magnetometer_y -= 65536
-            magnetometer_z = (magnetometer_z_h << 8 | magnetometer_z_l)
+        magnetometer_z = (magnetometer_z_h << 8 | magnetometer_z_l)
         if magnetometer_z > 32767:
             magnetometer_z -= 65536
         # Calculate the g-force in each axis

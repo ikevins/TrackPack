@@ -119,7 +119,7 @@ def inertialMeasurementUnit():
         else:
             direction = "North"
 
-        sensorReadings = (direction, g_total)
+        return direction, g_total
     except KeyboardInterrupt:
         pass
 
@@ -408,7 +408,6 @@ def openBeginLoggingWindow():
         global quarterMileComplete
         global afterIdentifier
         global maxSpeed
-        global sensorReadings
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round(((endTime - startTime) - functionRunTime), 2)
@@ -1954,7 +1953,6 @@ quarterMileComplete = False
 afterIdentifier = ""
 currentLog = []
 maxSpeed = 0
-sensorReadings = ()
 
 def coolantTemperatureTracker(response):
     global coolantTemperature

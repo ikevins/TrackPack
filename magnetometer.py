@@ -1,101 +1,141 @@
+#Setting Up smbus libraries
 import smbus
-import math
 import time
-
-# Define I2C address
-DEVICE_ADDRESS = 0x1E
-
-# Register addresses
-OUT_X_L = 0x03
-OUT_X_H = 0x04
-OUT_Y_L = 0x05
-OUT_Y_H = 0x06
-
-# Magnetometer calibration values (update with your own)
-CALIBRATION_X_MIN = -300
-CALIBRATION_X_MAX = 300
-CALIBRATION_Y_MIN = -300
-CALIBRATION_Y_MAX = 300
-
-# Initialize I2C bus
+import math
 bus = smbus.SMBus(1)
 
-def read_data(register):
-    # Read 16-bit little-endian data from the specified register
-    low_byte = bus.read_byte_data(DEVICE_ADDRESS, register)
-    high_byte = bus.read_byte_data(DEVICE_ADDRESS, register + 1)
-    value = (high_byte << 8) | low_byte
 
-    # Convert to signed value
-    if value & 0x8000:
-        value = -(value & 0x7FFF)
+##############
+# LIS3MDL Mag Registers #
+##############
+LIS3MDL_M_ADDRESS       = 0x1E
+LIS3MDL_WHO_AM_I_M      = 0x0F
+LIS3MDL_CTRL_REG1_M     = 0x20
+LIS3MDL_CTRL_REG2_M     = 0x21
+LIS3MDL_CTRL_REG3_M     = 0x22
+LIS3MDL_CTRL_REG4_M     = 0x23
+LIS3MDL_STATUS_REG_M        = 0x27
+LIS3MDL_OUT_X_L_M       = 0x28
+LIS3MDL_OUT_X_H_M       = 0x29
+LIS3MDL_OUT_Y_L_M       = 0x2A
+LIS3MDL_OUT_Y_H_M       = 0x2B
+LIS3MDL_OUT_Z_L_M       = 0x2C
+LIS3MDL_OUT_Z_H_M       = 0x2D
+LIS3MDL_TEMP_OUT_L_M        = 0x2E
+LIS3MDL_TEMP_OUT_H_M        = 0x2F
+LIS3MDL_INT_CFG_M       = 0x30
+LIS3MDL_INT_SRC_M       = 0x31
+LIS3MDL_INT_THS_L_M     = 0x32
+LIS3MDL_INT_THS_H_M     = 0x33
 
-    return value
+LIS3MDL_REG_CTL_1_TEMP_EN   = 0x80
+LIS3MDL_REG_CTL_2_RESET     = 0x04
 
-def get_direction(x, y):
-    # Calculate the direction based on x and y values
-    angle = math.atan2(y, x)
-    angle = math.degrees(angle)
 
-    if angle < 0:
-        angle += 360
+# mag_scale defines all possible FSR's of the magnetometer:
+    
+LIS3MDL_M_SCALE_4GS         = 0x20 # 00:  4Gs
+LIS3MDL_M_SCALE_8GS     = 0x40 # 01:  8Gs
+LIS3MDL_M_SCALE_12GS        = 0x60 # 10:  12Gs
+LIS3MDL_M_SCALE_16GS        = 0x60 # 11:  16Gs
+    
 
-    if angle >= 45 and angle < 135:
-        return "E"
-    elif angle >= 135 and angle < 225:
-        return "S"
-    elif angle >= 225 and angle < 315:
-        return "W"
-    else:
-        return "N"
+# mag_oder defines all possible output data rates of the magnetometer:
+    
+LIS3MDL_M_ODR_625       = 0x04 # 6.25 Hz 
+LIS3MDL_M_ODR_125       = 0x08 # 12.5 Hz 
+LIS3MDL_M_ODR_25        = 0x0C # 25 Hz 
+LIS3MDL_M_ODR_5         = 0x10 # 50 
+LIS3MDL_M_ODR_10        = 0x14 # 10 Hz
+LIS3MDL_M_ODR_20        = 0x14 # 20 Hz
+LIS3MDL_M_ODR_40        = 0x14 # 40 Hz
+LIS3MDL_M_ODR_80        = 0x14 # 80 Hz 
 
-try:
-    # Perform magnetometer calibration
-    print("Performing magnetometer calibration...")
-    x_min = y_min = float('inf')
-    x_max = y_max = float('-inf')
-    calibration_samples = 200
 
-    for _ in range(calibration_samples):
-        x = read_data(OUT_X_L)
-        y = read_data(OUT_Y_L)
+mRes = 4.0 / 32768.0   # 4G
+SENSITIVITY_OF_MIN_SCALE = 27368.0 # (4 guass scale) * (6842 LSB/guass at 4 guass scale)
+Scale = 16
+def initialise():
+    
+# initMag -- Sets up the magnetometer to begin reading.
+    
+    #User Register Reset Function
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG2_M, LIS3MDL_REG_CTL_2_RESET)
+    #Temperature Sensor Enabled
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG1_M, LIS3MDL_REG_CTL_1_TEMP_EN )
+    #Ultra High Performance Mode Selected for XY Axis
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG1_M, 0x60)
+    #Ultra High Performance Mode Selected for Z Axis
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG4_M, 0x0C)
+    #Output Data Rate of 80 Hz Selected
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG1_M, 0x1C)
+    #Continous Conversion Mode,4 wire interface Selected 
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG3_M, 0x00)
+    # 16 guass Full Scale 
+    bus.write_byte_data(LIS3MDL_M_ADDRESS, LIS3MDL_CTRL_REG2_M, 0x60)
+  
 
-        x_min = min(x_min, x)
-        x_max = max(x_max, x)
-        y_min = min(y_min, y)
-        y_max = max(y_max, y)
+#Read the magnetometer output registers.
+# This will read all six Magnetometer output registers.
 
-        time.sleep(0.01)
+# Reading the  Magnetometer X-Axis Values from the Register
+def readMagx():
+        Mag_l = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_X_L_M)
+        Mag_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_X_H_M)
+        Mag_total = (Mag_l | Mag_h <<8)
+        return Mag_total  if Mag_total < 32768 else Mag_total - 65536
 
-    # Apply calibration values
-    CALIBRATION_X_MIN = x_min
-    CALIBRATION_X_MAX = x_max
-    CALIBRATION_Y_MIN = y_min
-    CALIBRATION_Y_MAX = y_max
+# Reading the  Magnetometer Y-Axis Values from the Register
+def readMagy():
+        Mag_l = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_L_M)
+        Mag_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_H_M)
+        Mag_total = (Mag_l | Mag_h <<8)
+        return Mag_total  if Mag_total < 32768 else Mag_total - 65536
 
-    print("Calibration complete.")
-    print("X min:", CALIBRATION_X_MIN)
-    print("X max:", CALIBRATION_X_MAX)
-    print("Y min:", CALIBRATION_Y_MIN)
-    print("Y max:", CALIBRATION_Y_MAX)
-    print("")
+# Reading the  Magnetometer Z-Axis Values from the Register
+def readMagz():
+        Mag_l = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Z_L_M)
+        Mag_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_H_M)
+        Mag_total = (Mag_l | Mag_h <<8)
+        return Mag_total  if Mag_total < 32768 else Mag_total - 65536
 
-    while True:
-        # Read magnetometer data
-        x = read_data(OUT_X_L)
-        y = read_data(OUT_Y_L)
+def MagDataTotal():
+        mtotal = (((readMagx()**2)+(readMagy()**2)+(readMagz()**2))**0.5)
+        return mtotal
 
-        # Apply calibration offsets
-        x -= (CALIBRATION_X_MAX + CALIBRATION_X_MIN) / 2
-        y -= (CALIBRATION_Y_MAX + CALIBRATION_Y_MIN) / 2
+#Magnetic Sensitivity
+'''
+def Mag(SensorInterface):
+            
+             4 : (0x00, 27368.0)# (4 guass scale) * (6842 LSB/guass at 4 guass scale)
+             8 : (0x01, 27368.0)# (8 guass scale) * (3421 LSB/guass at 8 guass scale)
+             12: (0x10, 27372.0)# (12 guass scale) * (2281 LSB/guass at 12 guass scale)
+             16: (0x11, 27376.0)# (16 guass scale) * (1711 LSB/guass at 16 guass scale)
+'''
 
-        # Get direction
-        direction = get_direction(x, y)
 
-        # Print the direction
-        print("Direction:", direction)
+#Initialising the Device.
+initialise()
 
-        time.sleep(0.1)
+while True:
+    
+    #Read our Magnetometer  values
+    
+    Magx = readMagx()
+    Magy = readMagy()
+    Magz = readMagz()
+    Mtotal = MagDataTotal()
+    
+    #Convert Magnetometer raw to Guass values
+    Mtotal = Mtotal * Scale/SENSITIVITY_OF_MIN_SCALE
+    
 
-except KeyboardInterrupt:
-    print("Program terminated by user")
+    print ("\n","Magnetometer Readings :")
+    print ("Mag X-Axis :",Magx,"Mag Y-Axis :",Magy, "Mag Z-Axis :", Magz)
+    print ("Magx         : " ,Magx* Scale/SENSITIVITY_OF_MIN_SCALE,"Guass")
+    print ("Magy         : " ,Magy* Scale/SENSITIVITY_OF_MIN_SCALE,"Guass")
+    print ("Magz         : " ,Magz* Scale/SENSITIVITY_OF_MIN_SCALE,"Guass")
+    print ("Mtotal           : " ,Mtotal,"Guass")
+    
+    print ("****************************")
+    time.sleep(0.5)

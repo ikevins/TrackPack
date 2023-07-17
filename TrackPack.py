@@ -58,10 +58,6 @@ bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG1, 0x1C) # Ou
 bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG3, 0x00) # Continous Conversion Mode, 4 wire interface Selected
 bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG2, 0x60) # 16 guass Full Scale
 
-# Constants for gravitational acceleration
-GRAVITY = 9.80665  # m/s^2
-G_FORCE = GRAVITY / 1000  # g
-
 def exit(e):
     mainWindow.destroy()
 
@@ -407,6 +403,7 @@ def openBeginLoggingWindow():
         height=35.0
     )
 
+    sensorReadings = inertialMeasurementUnit()
     def update():
         functionStartTime = time.time()
         global functionRunTime

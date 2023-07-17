@@ -476,7 +476,7 @@ def openBeginLoggingWindow():
             speedDisplay,
             text=str(speed)
         )
-        '''
+
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
             text=str(sensorReadings)
@@ -485,7 +485,7 @@ def openBeginLoggingWindow():
             accelerometerDisplay,
             text=str(sensorReadings)
         )
-        '''
+        
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,
             text=str(elapsedTime) + "s"

@@ -15,14 +15,7 @@ while True:
     accel_y = accel_y / 16384.0
     accel_z = accel_z / 16384.0
 
-    # Calculate the total acceleration
-    acceleration = (accel_x ** 2 + accel_y ** 2 + accel_z ** 2) ** 0.5
-
-    # Convert acceleration to g-forces
-    gravity = 9.8  # Acceleration due to gravity in m/s^2
-    g_forces = acceleration / gravity
-
-    # Print the g-forces during acceleration
-    print("G-Forces during acceleration: {:.2f} g".format(g_forces))
+    # Print the acceleration values
+    print("Acceleration (g): X = {:.2f}, Y = {:.2f}, Z = {:.2f}".format(accel_x, accel_y, accel_z))
 
     time.sleep(0.1)  # Wait for a while before reading again

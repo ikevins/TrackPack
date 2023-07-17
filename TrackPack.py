@@ -408,8 +408,6 @@ def openBeginLoggingWindow():
         height=35.0
     )
 
-
-
     def update():
         functionStartTime = time.time()
         global functionRunTime
@@ -490,6 +488,7 @@ def openBeginLoggingWindow():
             speedDisplay,
             text=str(speed)
         )
+        '''
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
             text=str(sensorReadings[0])
@@ -498,6 +497,7 @@ def openBeginLoggingWindow():
             accelerometerDisplay,
             text=str(sensorReadings[1])
         )
+        '''
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,
             text=str(elapsedTime) + "s"

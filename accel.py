@@ -11,9 +11,9 @@ while True:
     accel_z = bus.read_word_data(address, 0x2C)
 
     # Convert the raw data to acceleration values
-    accel_x = accel_x / 0.000597
-    accel_y = accel_y / 0.000597
-    accel_z = accel_z / 0.000597
+    accel_x = accel_x / 16384.0
+    accel_y = accel_y / 16384.0
+    accel_z = accel_z / 16384.0
 
     # Calculate the total acceleration
     acceleration = (accel_x ** 2 + accel_y ** 2 + accel_z ** 2) ** 0.5

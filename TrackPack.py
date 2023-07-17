@@ -135,6 +135,10 @@ def inertialMeasurementUnit():
     except KeyboardInterrupt:
         pass
 
+def readIMU():
+    thread = threading.Thread(target=inertialMeasurementUnit())
+    thread.start()
+
 def openBeginLoggingWindow():
     startTime = time.time()
 
@@ -507,10 +511,6 @@ def openBeginLoggingWindow():
         functionRunTime += (functionEndTime - functionStartTime)
         #print(functionRunTime)
     update()
-
-def readIMU():
-    thread = threading.Thread(target=inertialMeasurementUnit())
-    thread.start()
 
 def saveLog(currentLog):
     file = open("TrackPackLogs.txt", "a")

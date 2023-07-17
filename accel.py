@@ -4,11 +4,21 @@ import time
 bus = smbus.SMBus(1)
 address = 0x6B
 
+# Calibration offsets
+offset_x = 0.0
+offset_y = 0.0
+offset_z = 0.0
+
 while True:
     # Read accelerometer data
     accel_x = bus.read_word_data(address, 0x28)
     accel_y = bus.read_word_data(address, 0x2A)
     accel_z = bus.read_word_data(address, 0x2C)
+
+    # Apply calibration offsets
+    accel_x -= offset_x
+    accel_y -= offset_y
+    accel_z -= offset_z
 
     # Convert the raw data to acceleration values
     accel_x = accel_x / 16384.0

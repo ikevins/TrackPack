@@ -132,7 +132,7 @@ def inertialMeasurementUnit():
     else:
         direction = "North"
 
-    #return direction, g_total
+    return direction, g_total
 
 def openBeginLoggingWindow():
     startTime = time.time()

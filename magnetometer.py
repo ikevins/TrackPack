@@ -20,6 +20,10 @@ OUTZ_H_XL = 0x2D
 CTRL_REG1_M = 0x20
 CTRL_REG2_M = 0x21
 CTRL_REG3_M = 0x22
+CTRL_REG4_M = 0x23
+CTRL_REG5_M = 0x24
+CTRL_REG6_M = 0x25
+CTRL_REG7_M = 0x26
 OUT_X_L_M = 0x28
 OUT_X_H_M = 0x29
 OUT_Y_L_M = 0x2A
@@ -39,8 +43,9 @@ bus.write_byte_data(ACCEL_ADDRESS, CTRL1_XL, 0x50)  # Set the accelerometer to 2
 bus.write_byte_data(ACCEL_ADDRESS, CTRL8_XL, 0xC0)  # Enable high-pass filter to remove gravity offset
 
 # Configure the magnetometer
-bus.write_byte_data(MAG_ADDRESS, CTRL_REG1_M, 0x60)  # Set the magnetometer to continuous mode and 100Hz data rate
-bus.write_byte_data(MAG_ADDRESS, CTRL_REG2_M, 0x00)  # Set the magnetometer scale to ±4 gauss
+bus.write_byte_data(MAG_ADDRESS, CTRL_REG5_M, 0x40)  # Enable internal temperature sensor
+bus.write_byte_data(MAG_ADDRESS, CTRL_REG6_M, 0xE0)  # Set the full-scale selection to +/- 12 Gauss
+bus.write_byte_data(MAG_ADDRESS, CTRL_REG7_M, 0x00)  # Set the magnetometer to Continuous-conversion mode
 
 def read_acceleration():
     # Read acceleration data from the accelerometer
@@ -104,16 +109,10 @@ try:
         g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2) - 1.0  # Subtract the 1g offset
 
         # Read magnetic field data
-        mag_x, mag_y, _ = read_magnetic_field()
+        mag_x, mag_y, mag_z = read_magnetic_field()
 
         # Calculate the heading or direction using the magnetometer data
         heading = math.atan2(mag_y, mag_x)
-        if heading < 0:
-            heading += 2 * math.pi
-
-        # Adjust the heading based on the orientation of the sensor
-        heading -= math.pi / 2
-
         if heading < 0:
             heading += 2 * math.pi
 

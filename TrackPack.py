@@ -62,67 +62,6 @@ bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG2, 0x60) # 16
 def exit(e):
     mainWindow.destroy()
 
-def inertialMeasurementUnit():
-    try:
-        # Read acceleration data from the accelerometer
-        accelerometer_x_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTX_L)
-        accelerometer_x_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTX_H)
-        accelerometer_y_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTY_L)
-        accelerometer_y_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTY_H)
-        accelerometer_z_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTZ_L)
-        accelerometer_z_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTZ_H)
-        # Read acceleration data from the accelerometer
-        magnetometer_x_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTX_L)
-        magnetometer_x_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTX_H)
-        magnetometer_y_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTY_L)
-        magnetometer_y_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTY_H)
-        magnetometer_z_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTZ_L)
-        magnetometer_z_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTZ_H)
-        # Convert the raw data to signed 16-bit values
-        accelerometer_x = (accelerometer_x_h << 8 | accelerometer_x_l)
-        if accelerometer_x > 32767:
-            accelerometer_x -= 65536
-        accelerometer_y = (accelerometer_y_h << 8 | accelerometer_y_l)
-        if accelerometer_y > 32767:
-            accelerometer_y -= 65536
-        accelerometer_z = (accelerometer_z_h << 8 | accelerometer_z_l)
-        if accelerometer_z > 32767:
-            accelerometer_z -= 65536
-        magnetometer_x = (magnetometer_x_h << 8 | magnetometer_x_l)
-        if magnetometer_x > 32767:
-            magnetometer_x -= 65536
-        magnetometer_y = (magnetometer_y_h << 8 | magnetometer_y_l)
-        if magnetometer_y > 32767:
-            magnetometer_y -= 65536
-        magnetometer_z = (magnetometer_z_h << 8 | magnetometer_z_l)
-        if magnetometer_z > 32767:
-            magnetometer_z -= 65536
-        # Calculate the g-force in each axis
-        g_x = accelerometer_x / 16384.0
-        g_y = accelerometer_y / 16384.0
-        g_z = accelerometer_z / 16384.0
-        # Calculate the total g-force
-        g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2) - 1.0  # Subtract the 1g offset
-        # Display only positive g-force values
-        g_total = max(0, g_total)
-        # Calculate the direction
-        direction = ""
-        angle = math.degrees(math.atan2(magnetometer_x, magnetometer_y))
-        if angle < 0:
-            angle += 360
-        if 45 <= angle < 135:
-            direction = "East"
-        elif 135 <= angle < 225:
-            direction = "South"
-        elif 225 <= angle < 315:
-            direction = "West"
-        else:
-            direction = "North"
-
-        return direction, g_total
-    except KeyboardInterrupt:
-        pass
-
 def openBeginLoggingWindow():
     startTime = time.time()
 
@@ -396,6 +335,67 @@ def openBeginLoggingWindow():
         height=35.0
     )
 
+    def inertialMeasurementUnit():
+        try:
+            # Read acceleration data from the accelerometer
+            accelerometer_x_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTX_L)
+            accelerometer_x_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTX_H)
+            accelerometer_y_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTY_L)
+            accelerometer_y_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTY_H)
+            accelerometer_z_l = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTZ_L)
+            accelerometer_z_h = bus.read_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_OUTZ_H)
+            # Read acceleration data from the accelerometer
+            magnetometer_x_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTX_L)
+            magnetometer_x_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTX_H)
+            magnetometer_y_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTY_L)
+            magnetometer_y_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTY_H)
+            magnetometer_z_l = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTZ_L)
+            magnetometer_z_h = bus.read_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_OUTZ_H)
+            # Convert the raw data to signed 16-bit values
+            accelerometer_x = (accelerometer_x_h << 8 | accelerometer_x_l)
+            if accelerometer_x > 32767:
+                accelerometer_x -= 65536
+            accelerometer_y = (accelerometer_y_h << 8 | accelerometer_y_l)
+            if accelerometer_y > 32767:
+                accelerometer_y -= 65536
+            accelerometer_z = (accelerometer_z_h << 8 | accelerometer_z_l)
+            if accelerometer_z > 32767:
+                accelerometer_z -= 65536
+            magnetometer_x = (magnetometer_x_h << 8 | magnetometer_x_l)
+            if magnetometer_x > 32767:
+                magnetometer_x -= 65536
+            magnetometer_y = (magnetometer_y_h << 8 | magnetometer_y_l)
+            if magnetometer_y > 32767:
+                magnetometer_y -= 65536
+            magnetometer_z = (magnetometer_z_h << 8 | magnetometer_z_l)
+            if magnetometer_z > 32767:
+                magnetometer_z -= 65536
+            # Calculate the g-force in each axis
+            g_x = accelerometer_x / 16384.0
+            g_y = accelerometer_y / 16384.0
+            g_z = accelerometer_z / 16384.0
+            # Calculate the total g-force
+            g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2) - 1.0  # Subtract the 1g offset
+            # Display only positive g-force values
+            g_total = max(0, g_total)
+            # Calculate the direction
+            direction = ""
+            angle = math.degrees(math.atan2(magnetometer_x, magnetometer_y))
+            if angle < 0:
+                angle += 360
+            if 45 <= angle < 135:
+                direction = "East"
+            elif 135 <= angle < 225:
+                direction = "South"
+            elif 225 <= angle < 315:
+                direction = "West"
+            else:
+                direction = "North"
+
+            return direction
+        except KeyboardInterrupt:
+            pass
+
     def update():
         functionStartTime = time.time()
         global functionRunTime
@@ -479,11 +479,11 @@ def openBeginLoggingWindow():
         '''
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
-            text=str(sensorReadings[0])
+            text=str(sensorReadings)
         )
         BeginLoggingWindowCanvas.itemconfig(
             accelerometerDisplay,
-            text=str(sensorReadings[1])
+            text=str(sensorReadings)
         )
         '''
         BeginLoggingWindowCanvas.itemconfig(

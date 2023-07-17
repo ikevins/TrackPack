@@ -14,11 +14,28 @@ OUTY_H_XL = 0x2B
 OUTZ_L_XL = 0x2C
 OUTZ_H_XL = 0x2D
 
+# Accelerometer sensitivity configuration
+SENSITIVITY_2G = 16384.0
+SENSITIVITY_4G = 8192.0
+SENSITIVITY_8G = 4096.0
+SENSITIVITY_16G = 2048.0
+
 # Initialize the I2C bus
 bus = smbus.SMBus(1)  # 1 for Raspberry Pi 2 and newer
 
 # Configure the accelerometer
 bus.write_byte_data(I2C_ADDRESS, CTRL1_XL, 0x50)  # Set the accelerometer to 208 Hz, ±2g range
+
+# Determine the accelerometer range
+accel_range = bus.read_byte_data(I2C_ADDRESS, CTRL1_XL) & 0x0F
+sensitivity = SENSITIVITY_2G
+
+if accel_range == 0x02:
+    sensitivity = SENSITIVITY_16G
+elif accel_range == 0x04:
+    sensitivity = SENSITIVITY_8G
+elif accel_range == 0x08:
+    sensitivity = SENSITIVITY_4G
 
 try:
     while True:
@@ -44,9 +61,9 @@ try:
             z -= 65536
 
         # Calculate the g-force in each axis
-        g_x = x / 16384.0  # 16384 LSB/g for ±2g range
-        g_y = y / 16384.0
-        g_z = z / 16384.0
+        g_x = x / sensitivity
+        g_y = y / sensitivity
+        g_z = z / sensitivity
 
         # Calculate the total g-force
         g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2)

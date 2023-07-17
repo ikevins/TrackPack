@@ -408,6 +408,7 @@ def openBeginLoggingWindow():
         global quarterMileComplete
         global afterIdentifier
         global maxSpeed
+        global maxGForce
         sensorReadings = inertialMeasurementUnit()
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
@@ -417,7 +418,8 @@ def openBeginLoggingWindow():
         #speed = random.randint(0, 100)
         if (speed > maxSpeed):
             maxSpeed = speed
-            print(maxSpeed)
+        if (sensorReadings[1] > maxGForce):
+            maxGForce = sensorReadings[1]
 
         if ((round(distanceTravelled, 4) == round((60 / 5280), 4)) and sixtyFootComplete == False):
             sixtyFootTime = elapsedTime
@@ -465,6 +467,7 @@ def openBeginLoggingWindow():
             currentLog.append(quarterMileTime)
             currentLog.append(quarterMileSpeed)
             currentLog.append(maxSpeed)
+            currentLog.append(maxGForce)
             saveLog(currentLog)
             #stopButton.destroy()
             #print(quarterMileComplete)
@@ -572,10 +575,11 @@ def openParameterLoggingWindow():
         afterIdentifier = ""
         currentLog = []
         maxSpeed = 0
+        maxGForce = 0
 
     def beginLoggingCountdown():
         global currentLog
-        if (speed != 0):
+        if (speed == 0):
             openVehicleMovingWindow()
         else:
             def countdown(count):
@@ -583,12 +587,12 @@ def openParameterLoggingWindow():
                 if count > 0:
                     ParameterLoggingWindow.after(1000, countdown, count - 1)
                 else:
-                    if (speed != 0):
+                    if (speed == 0):
                         openVehicleMovingWindow()
                     else:
                         ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
                         resetParameters()
-                        currentLog.append(time.time())
+                        currentLog.append(round(time.time()))
                         currentLog.append(datetime.now().month)
                         currentLog.append(datetime.now().day)
                         currentLog.append(datetime.now().year)
@@ -742,14 +746,6 @@ def openStoredLogWindow(logs):
         22.0,
         329.0,
         159.0,
-        450.0,
-        fill="#A9A9A9",
-        outline=""
-    )
-    StoredLogWindowCanvas.create_rectangle(
-        339.0,
-        329.0,
-        476.0,
         450.0,
         fill="#A9A9A9",
         outline=""
@@ -928,17 +924,9 @@ def openStoredLogWindow(logs):
         709.0,
         370.0,
         anchor="center",
-        text="1",
+        text=logs[11],
         fill="#000000",
         font=("Inter", 36 * -1)
-    )
-    StoredLogWindowCanvas.create_text(
-        406.0,
-        389.0,
-        anchor="center",
-        text="N",
-        fill="#000000",
-        font=("Inter", 40 * -1)
     )
     StoredLogWindowCanvas.create_text(
         89.0,
@@ -1924,7 +1912,7 @@ while len(connection.supported_commands) < 100:
 
 coolantTemperature = 0
 rpm = 0
-speed = 0
+speed = 60
 speedTotal = 0
 throttlePosition = 0
 fuelLevel = 0

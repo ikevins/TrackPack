@@ -489,11 +489,11 @@ def openBeginLoggingWindow():
         )
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
-            text=sensorReadings[0]
+            text=str(sensorReadings[0])
         )
         BeginLoggingWindowCanvas.itemconfig(
             accelerometerDisplay,
-            text=sensorReadings[1]
+            text=str(sensorReadings[1])
         )
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,

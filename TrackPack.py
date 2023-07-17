@@ -1,4 +1,4 @@
-import obd
+#import obd
 import random
 import smbus
 import math
@@ -132,7 +132,7 @@ def inertialMeasurementUnit():
     else:
         direction = "North"
 
-    return direction, g_total
+    #return direction, g_total
 
 def openBeginLoggingWindow():
     startTime = time.time()
@@ -424,7 +424,7 @@ def openBeginLoggingWindow():
         elapsedTime = round(((endTime - startTime) - functionRunTime), 2)
         distancePerMilliSecond = (speed / 3600000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
-        speed = random.randint(0, 100)
+        #speed = random.randint(0, 100)
         sensorReadings = inertialMeasurementUnit()
         if (speed > maxSpeed):
             maxSpeed = speed
@@ -584,7 +584,7 @@ def openParameterLoggingWindow():
 
     def beginLoggingCountdown():
         global currentLog
-        if (speed == 0):
+        if (speed != 0):
             openVehicleMovingWindow()
         else:
             def countdown(count):
@@ -592,7 +592,7 @@ def openParameterLoggingWindow():
                 if count > 0:
                     ParameterLoggingWindow.after(1000, countdown, count - 1)
                 else:
-                    if (speed == 0):
+                    if (speed != 0):
                         openVehicleMovingWindow()
                     else:
                         ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
@@ -973,7 +973,6 @@ def openStoredLogWindow(logs):
         width=160.0,
         height=35.0
     )
-
 
 def checkDTC():
     if malfunctionIndicatorLight == True and CEL_count > 0:
@@ -1922,6 +1921,7 @@ def openDataWindow():
         dataWindow.after(1, update)
     update()
 
+'''
 obd.logger.setLevel(obd.logging.DEBUG)
 
 connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
@@ -1929,10 +1929,11 @@ connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=Fals
 #Continuously query until the amount of supported commands is greater than 100
 while len(connection.supported_commands) < 100:
     connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
+'''
 
 coolantTemperature = 0
 rpm = 0
-speed = 1
+speed = 0
 speedTotal = 0
 throttlePosition = 0
 fuelLevel = 0
@@ -2054,6 +2055,7 @@ def evapTracker (response):
     if not response.is_null():
         evapPressure = int(response.value.magnitude)
 
+'''
 # Start the OBD connection and add the callbacks
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 connection.watch(obd.commands.RPM, callback=rpmTracker)
@@ -2075,6 +2077,7 @@ connection.watch(obd.commands.MAF, callback=mafTracker)
 connection.watch(obd.commands.FUEL_TYPE, callback=fuelTypeList)
 connection.watch(obd.commands.EVAP_VAPOR_PRESSURE, callback=evapTracker)
 connection.start()
+'''
 
 mainWindowCanvas = Canvas(
     mainWindow,

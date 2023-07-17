@@ -1,4 +1,5 @@
 import smbus
+import time
 
 # I2C address of the LSM6DSL
 DEVICE_ADDRESS = 0x6B
@@ -47,8 +48,14 @@ if who_am_i != 0x6A:
 bus.write_byte_data(DEVICE_ADDRESS, CTRL1_XL_REG, 0x60)  # Accelerometer: 208 Hz, ±2 g
 bus.write_byte_data(DEVICE_ADDRESS, CTRL2_G_REG, 0x60)   # Gyroscope: 208 Hz, ±2000 dps
 
-# Read and print sensor data
-acceleration = read_acceleration()
-gyroscope = read_gyroscope()
-print("Acceleration (mg): X = {}, Y = {}, Z = {}".format(*acceleration))
-print("Gyroscope (dps): X = {}, Y = {}, Z = {}".format(*gyroscope))
+try:
+    while True:
+        acceleration = read_acceleration()
+        gyroscope = read_gyroscope()
+        print("Acceleration (mg): X = {}, Y = {}, Z = {}".format(*acceleration))
+        print("Gyroscope (dps): X = {}, Y = {}, Z = {}".format(*gyroscope))
+        print("----")
+        time.sleep(0.5)  # Pause for 0.5 seconds before reading again
+
+except KeyboardInterrupt:
+    pass

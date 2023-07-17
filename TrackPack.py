@@ -1,19 +1,14 @@
-import obd
+#import obd
 import random
 import time
 from tkinter import *
 from tkinter import font as tkFont
-from picamera import PiCamera
-import time
-camera = PiCamera()
-camera.resolution = (1280, 720)
-camera.vflip = False
-camera.contrast = 10
+from datetime import datetime
 
 mainWindow = Tk()
 
-#mainWindow.geometry("800x480")
-mainWindow.attributes('-fullscreen',True)
+mainWindow.geometry("800x480")
+#mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
@@ -24,8 +19,8 @@ def openBeginLoggingWindow():
     startTime = time.time()
 
     BeginLoggingWindow=Toplevel()
-    #BeginLoggingWindow.geometry("800x480")
-    BeginLoggingWindow.attributes('-fullscreen',True)
+    BeginLoggingWindow.geometry("800x480")
+    #BeginLoggingWindow.attributes('-fullscreen',True)
     BeginLoggingWindow.title("TrackPack Begin Parameter Logging")
     BeginLoggingWindow.configure(bg = "#FFFFFF")
 
@@ -39,21 +34,6 @@ def openBeginLoggingWindow():
         relief = "ridge"
     )
     BeginLoggingWindowCanvas.place(x = 0, y = 0)
-    goBackButton = Button(
-        BeginLoggingWindow,
-        text="Go Back",
-        font=("Inter", 22 * -1),
-        borderwidth=0,
-        highlightthickness=0,
-        command=BeginLoggingWindow.destroy,
-        relief="flat"
-    )
-    goBackButton.place(
-        x=10.0,
-        y=20.0,
-        width=160.0,
-        height=35.0
-    )
     BeginLoggingWindowCanvas.create_rectangle(
         22.0,
         329.0,
@@ -256,6 +236,61 @@ def openBeginLoggingWindow():
         fill="#000000",
         font=("Inter", 28 * -1)
     )
+    '''
+    def stopLogging():
+        global maxSpeed
+        global currentLog
+        BeginLoggingWindow.after_cancel(afterIdentifier)
+        currentLog.append(maxSpeed)
+        saveLog(currentLog)
+        goBackButton = Button(
+            BeginLoggingWindow,
+            text="Go Back",
+            font=("Inter", 22 * -1),
+            borderwidth=0,
+            highlightthickness=0,
+            command=BeginLoggingWindow.destroy,
+            relief="flat"
+        )
+        goBackButton.place(
+            x=10.0,
+            y=20.0,
+            width=160.0,
+            height=35.0
+        )
+        stopButton.destroy()
+    stopButton = Button(
+        BeginLoggingWindow,
+        text="Stop Logging",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=stopLogging,
+        relief="flat"
+    )
+    stopButton.place(
+        x=630.0,
+        y=20.0,
+        width=160.0,
+        height=35.0
+    )
+    '''
+    goBackButton = Button(
+        BeginLoggingWindow,
+        text="Go Back",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=BeginLoggingWindow.destroy,
+        relief="flat"
+    )
+    goBackButton.place(
+        x=10.0,
+        y=20.0,
+        width=160.0,
+        height=35.0
+    )
+
     def update():
         functionStartTime = time.time()
         global functionRunTime
@@ -266,14 +301,22 @@ def openBeginLoggingWindow():
         global eighthMileComplete
         global thousandFootComplete
         global quarterMileComplete
+        global afterIdentifier
+        global maxSpeed
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round(((endTime - startTime) - functionRunTime), 2)
         distancePerMilliSecond = (speed / 3600000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
+        speed = random.randint(0, 100)
+        if (speed > maxSpeed):
+            maxSpeed = speed
+            print(maxSpeed)
+
         if ((round(distanceTravelled, 4) == round((60 / 5280), 4)) and sixtyFootComplete == False):
             sixtyFootTime = elapsedTime
             sixtyFootComplete = True
+            currentLog.append(sixtyFootTime)
             #print(sixtyFootComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 sixtyFootStats,
@@ -282,14 +325,18 @@ def openBeginLoggingWindow():
         if (speed >= 60 and zeroToSixtyComplete == False):
             zeroToSixtyTime = elapsedTime
             zeroToSixtyComplete = True
+            currentLog.append(zeroToSixtyTime)
             #print(zeroToSixtyComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 zeroToSixtyStats,
                 text=str(zeroToSixtyTime) + "s"
             )
         if ((round(distanceTravelled, 4) == 0.125) and eighthMileComplete == False):
+            eighthMileSpeed = speed
             eighthMileTime = elapsedTime
             eighthMileComplete = True
+            currentLog.append(eighthMileTime)
+            currentLog.append(eighthMileSpeed)
             #print(eighthMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 eighthMileStats,
@@ -298,21 +345,27 @@ def openBeginLoggingWindow():
         if ((round(distanceTravelled, 4) == round((1000 / 5280), 4)) and thousandFootComplete == False):
             thousandFootTime = elapsedTime
             thousandFootComplete = True
+            currentLog.append(thousandFootTime)
             #print(thousandFootComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 thousandFootStats,
                 text=str(thousandFootTime) + "s"
             )
         if ((round(distanceTravelled, 4) == 0.250) and quarterMileComplete == False):
+            BeginLoggingWindow.after_cancel(afterIdentifier)
+            quarterMileSpeed = speed
             quarterMileTime = elapsedTime
-            camera.stop_recording()
             quarterMileComplete = True
+            currentLog.append(quarterMileTime)
+            currentLog.append(quarterMileSpeed)
+            currentLog.append(maxSpeed)
+            saveLog(currentLog)
+            #stopButton.destroy()
             #print(quarterMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 quarterMileStats,
                 text=str(quarterMileTime) + " @ " + str(speed) + "mph"
             )
-            BeginLoggingWindow.after_cancel(afterIdentifier)
         BeginLoggingWindowCanvas.itemconfig(
             speedDisplay,
             text=str(speed)
@@ -326,14 +379,86 @@ def openBeginLoggingWindow():
         #print(functionRunTime)
     update()
 
+def saveLog(currentLog):
+    file = open("TrackPackLogs.txt", "a")
+    for i in currentLog:
+        file.write(str(i) + " ")
+    file.write("\n")
+    file.close
+
+def openNoLogsWindow():
+    noLogsWindow=Toplevel()
+    noLogsWindow.geometry("800x480")
+    #noLogsWindow.attributes('-fullscreen',True)
+    noLogsWindow.title("TrackPack Review Stored Data")
+    noLogsWindow.configure(bg = "#FFFFFF")
+
+    noLogsWindowCanvas = Canvas(
+        noLogsWindow,
+        bg = "#FFFFFF",
+        height = 480,
+        width = 800,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
+    noLogsWindowCanvas.place(x = 0, y = 0)
+    noLogsWindowCanvas.create_text(
+        254.0,
+        168.0,
+        anchor="nw",
+        text="There are no stored logs.",
+        fill="#000000",
+        font=("Inter", 32 * -1)
+    )
+    okButton = Button(
+        noLogsWindow,
+        text="OK",
+        font=("Inter", 24 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=noLogsWindow.destroy,
+        relief="flat"
+    )
+    okButton.place(
+        x=320.0,
+        y=222.0,
+        width=160.0,
+        height=57.0
+    )
+
 def openParameterLoggingWindow():
     ParameterLoggingWindow=Toplevel()
-    #ParameterLoggingWindow.geometry("800x480")
-    ParameterLoggingWindow.attributes('-fullscreen',True)
+    ParameterLoggingWindow.geometry("800x480")
+    #ParameterLoggingWindow.attributes('-fullscreen',True)
     ParameterLoggingWindow.title("TrackPack Parameter Logging")
     ParameterLoggingWindow.configure(bg = "#FFFFFF")
     global speed
+
+    def resetParameters():
+        global functionRunTime
+        global distanceTravelled
+        global sixtyFootComplete
+        global zeroToSixtyComplete
+        global eighthMileComplete
+        global thousandFootComplete
+        global quarterMileComplete
+        global afterIdentifier
+        global currentLog
+        global maxSpeed
+        functionRunTime = 0
+        distanceTravelled = 0
+        sixtyFootComplete = False
+        zeroToSixtyComplete = False
+        eighthMileComplete = False
+        thousandFootComplete = False
+        quarterMileComplete = False
+        afterIdentifier = ""
+        currentLog = []
+        maxSpeed = 0
+
     def beginLoggingCountdown():
+        global currentLog
         if (speed == 0):
             openVehicleMovingWindow()
         else:
@@ -342,9 +467,17 @@ def openParameterLoggingWindow():
                 if count > 0:
                     ParameterLoggingWindow.after(1000, countdown, count - 1)
                 else:
-                    ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
-                    openBeginLoggingWindow()
-                    camera.start_recording(/home/ikevins/Desktop/testvideo.h264)
+                    if (speed == 0):
+                        openVehicleMovingWindow()
+                    else:
+                        ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
+                        resetParameters()
+                        currentLog.append(time.time())
+                        currentLog.append(datetime.now().month)
+                        currentLog.append(datetime.now().day)
+                        currentLog.append(datetime.now().year)
+                        openBeginLoggingWindow()
+                        #ParameterLoggingWindow.destroy()
             beginLoggingButton.destroy()
             countdownText = ParameterLoggingWindowCanvas.create_text(
                 390.0,
@@ -404,14 +537,83 @@ def openParameterLoggingWindow():
     )
 
 def openStoredDataWindow():
-    StoredDataWindow=Toplevel()
-    #StoredDataWindow.geometry("800x480")
-    StoredDataWindow.attributes('-fullscreen',True)
-    StoredDataWindow.title("TrackPack Review Stored Data")
-    StoredDataWindow.configure(bg = "#FFFFFF")
+    try:
+        with open("TrackPackLogs.txt", "r") as file:
+            logs = []
+            for i in file:
+                currentLine = i.split()
+                logs.append(currentLine)
+    except FileNotFoundError:
+        openNoLogsWindow()
+    else:
+        StoredDataWindow=Toplevel()
+        StoredDataWindow.geometry("800x480")
+        #StoredDataWindow.attributes('-fullscreen',True)
+        StoredDataWindow.title("TrackPack Review Stored Data")
+        StoredDataWindow.configure(bg = "#FFFFFF")
+        StoredDataWindowCanvas = Canvas(
+            StoredDataWindow,
+            bg = "#FFFFFF",
+            height = 480,
+            width = 800,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+        )
+        StoredDataWindowCanvas.place(x = 0, y = 0)
+        goBackButton = Button(
+            StoredDataWindow,
+            text="Go Back",
+            font=("Inter", 22 * -1),
+            borderwidth=0,
+            highlightthickness=0,
+            command=StoredDataWindow.destroy,
+            relief="flat"
+        )
+        goBackButton.place(
+            x=10.0,
+            y=20.0,
+            width=160.0,
+            height=35.0
+        )
+        yPosition = 91
+        buttonList = []
+        for i in range(len(logs)):
+            def action(x = i):
+                openStoredLogWindow(logs[x])
+            buttonList.append(Button(
+                StoredDataWindow,
+                text=logs[i][1] + "/" + logs[i][2] + "/" + logs[i][3],
+                font=("Inter", 22 * -1),
+                borderwidth=0,
+                highlightthickness=0,
+                command=action,
+                relief="flat"
+            ))
+            buttonList[i].place(
+                x=5.0,
+                y=yPosition,
+                width=790.0,
+                height=41.0
+            )
+            yPosition += 50
 
-    StoredDataWindowCanvas = Canvas(
-        StoredDataWindow,
+def openStoredLogWindow(logs):
+    StoredLogWindow=Toplevel()
+    StoredLogWindow.geometry("800x480")
+    #StoredLogWindow.attributes('-fullscreen',True)
+    StoredLogWindow.title("TrackPack Review Stored Data")
+    StoredLogWindow.configure(bg = "#FFFFFF")
+
+    '''
+    missingParameters = 12 - len(logs)
+    if (missingParameters > 0):
+        for i in range(missingParameters):
+            logs.append(None)
+    '''
+
+    StoredLogWindowCanvas = Canvas(
+        StoredLogWindow,
         bg = "#FFFFFF",
         height = 480,
         width = 800,
@@ -419,7 +621,234 @@ def openStoredDataWindow():
         highlightthickness = 0,
         relief = "ridge"
     )
-    StoredDataWindowCanvas.place(x = 0, y = 0)
+    StoredLogWindowCanvas.place(x = 0, y = 0)
+    StoredLogWindowCanvas.create_rectangle(
+        22.0,
+        329.0,
+        159.0,
+        450.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        339.0,
+        329.0,
+        476.0,
+        450.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        641.0,
+        329.0,
+        778.0,
+        450.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        185.0,
+        50.0,
+        anchor="nw",
+        text="TrackPack Log: " + logs[1] + "/" + logs[2] + "/" + logs[3],
+        fill="#000000",
+        font=("Inter", 32 * -1),
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        95.0,
+        580.0,
+        145.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    if not (logs[9] == None):
+        StoredLogWindowCanvas.create_text(
+            357.0,
+            103.0,
+            anchor="nw",
+            text=logs[9] + "s",
+            fill="#000000",
+            font=("Inter", 35 * -1)
+        )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        150.0,
+        580.0,
+        180.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        225.0,
+        152.0,
+        anchor="nw",
+        text="60ft",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        515.0,
+        152.0,
+        anchor="nw",
+        text=logs[4] + "s",
+        fill="#000000",
+        font=("Inter", 24 * -1),
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        185.0,
+        580.0,
+        215.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        225.0,
+        187.0,
+        anchor="nw",
+        text="0-60mph",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        515.0,
+        187.0,
+        anchor="nw",
+        text=logs[5] + "s",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        220.0,
+        580.0,
+        250.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        225.0,
+        222.0,
+        anchor="nw",
+        text="1/8 mile",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    if not (logs[6] == None and logs[7] == None):
+        StoredLogWindowCanvas.create_text(
+            400.0,
+            220.0,
+            anchor="nw",
+            text=logs[6] + "s @ " + logs[7] + "mph",
+            fill="#000000",
+            font=("Inter", 24 * -1)
+        )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        255.0,
+        580.0,
+        285.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        225.0,
+        257.0,
+        anchor="nw",
+        text="1000ft",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        500.0,
+        257.0,
+        anchor="nw",
+        text=logs[8] + "s",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_rectangle(
+        220.0,
+        290.0,
+        580.0,
+        320.0,
+        fill="#A9A9A9",
+        outline=""
+    )
+    StoredLogWindowCanvas.create_text(
+        225.0,
+        292.0,
+        anchor="nw",
+        text="1/4 mile",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        390.0,
+        292.0,
+        anchor="nw",
+        text=logs[9] + "s @ " + logs[10] + "mph",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        702.0,
+        385.0,
+        anchor="nw",
+        text="g",
+        fill="#000000",
+        font=("Inter", 28 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        90.0,
+        370.0,
+        anchor="center",
+        text=logs[11],
+        fill="#000000",
+        font=("Inter", 36 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        709.0,
+        370.0,
+        anchor="center",
+        text="1",
+        fill="#000000",
+        font=("Inter", 36 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        406.0,
+        389.0,
+        anchor="center",
+        text="N",
+        fill="#000000",
+        font=("Inter", 40 * -1)
+    )
+    StoredLogWindowCanvas.create_text(
+        89.0,
+        415.0,
+        anchor="center",
+        text="mph\n (top speed)",
+        fill="#000000",
+        font=("Inter", 24 * -1),
+        justify="center"
+    )
+    goBackButton = Button(
+        StoredLogWindow,
+        text="Go Back",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=StoredLogWindow.destroy,
+        relief="flat"
+    )
+    goBackButton.place(
+        x=10.0,
+        y=20.0,
+        width=160.0,
+        height=35.0
+    )
+
 
 def checkDTC():
     if malfunctionIndicatorLight == True and CEL_count > 0:
@@ -429,8 +858,8 @@ def checkDTC():
 
 def openDTCWindow():
     DTCWindow=Toplevel()
-    #DTCWindow.geometry("800x480")
-    DTCWindow.attributes('-fullscreen',True)
+    DTCWindow.geometry("800x480")
+    #DTCWindow.attributes('-fullscreen',True)
     DTCWindow.title("TrackPack Diagnostic Information")
     DTCWindow.configure(bg = "#FFFFFF")
 
@@ -495,8 +924,8 @@ def openDTCWindow():
 
 def openNoDTCWindow():
     noDTCWindow=Toplevel()
-    #noDTCWindow.geometry("800x480")
-    noDTCWindow.attributes('-fullscreen',True)
+    noDTCWindow.geometry("800x480")
+    #noDTCWindow.attributes('-fullscreen',True)
     noDTCWindow.title("TrackPack Diagnostic Information")
     noDTCWindow.configure(bg = "#FFFFFF")
 
@@ -536,8 +965,8 @@ def openNoDTCWindow():
 
 def openVehicleMovingWindow():
     vehicleMovingWindow=Toplevel()
-    #vehicleMovingWindow.geometry("800x480")
-    vehicleMovingWindow.attributes('-fullscreen',True)
+    vehicleMovingWindow.geometry("800x480")
+    #vehicleMovingWindow.attributes('-fullscreen',True)
     vehicleMovingWindow.title("TrackPack Parameter Logging")
     vehicleMovingWindow.configure(bg = "#FFFFFF")
 
@@ -577,8 +1006,8 @@ def openVehicleMovingWindow():
 
 def openDataWindow():
     dataWindow=Toplevel()
-    #dataWindow.geometry("800x480")
-    dataWindow.attributes('-fullscreen',True)
+    dataWindow.geometry("800x480")
+    #dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 
@@ -817,17 +1246,17 @@ def openDataWindow():
         dataWindow.after(1, update)
     update()
 
-obd.logger.setLevel(obd.logging.DEBUG)
+#obd.logger.setLevel(obd.logging.DEBUG)
 
-connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
+#connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
 
 #Continuously query until the amount of supported commands is greater than 100
-while len(connection.supported_commands) < 100:
-    connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
+#while len(connection.supported_commands) < 100:
+    #connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
 
 coolantTemperature = 0
 rpm = 0
-speed = 0
+speed = 1
 speedTotal = 0
 throttlePosition = 0
 fuelLevel = 0
@@ -843,6 +1272,9 @@ zeroToSixtyComplete = False
 eighthMileComplete = False
 thousandFootComplete = False
 quarterMileComplete = False
+afterIdentifier = ""
+currentLog = []
+maxSpeed = 0
 
 def coolantTemperatureTracker(response):
     global coolantTemperature
@@ -887,15 +1319,15 @@ def dtcTracker(response):
         currentDTCs = response.value
 
 # Start the OBD connection and add the callbacks
-connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
-connection.watch(obd.commands.RPM, callback=rpmTracker)
-connection.watch(obd.commands.SPEED, callback=speedTracker)
-connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
-connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
-connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
-connection.watch(obd.commands.STATUS, callback=statusTracker)
-connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
-connection.start()
+#connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
+#connection.watch(obd.commands.RPM, callback=rpmTracker)
+#connection.watch(obd.commands.SPEED, callback=speedTracker)
+#connection.watch(obd.commands.THROTTLE_POS, callback=throttlePositionTracker)
+#connection.watch(obd.commands.FUEL_LEVEL, callback=fuelLevelTracker)
+#connection.watch(obd.commands.OIL_TEMP, callback=oilTemperatureTracker)
+#connection.watch(obd.commands.STATUS, callback=statusTracker)
+#connection.watch(obd.commands.GET_DTC, callback=dtcTracker)
+#connection.start()
 
 mainWindowCanvas = Canvas(
     mainWindow,

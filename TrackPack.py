@@ -392,7 +392,7 @@ def openBeginLoggingWindow():
             else:
                 direction = "North"
 
-            return direction
+            return direction, g_total
         except KeyboardInterrupt:
             pass
 
@@ -479,13 +479,13 @@ def openBeginLoggingWindow():
 
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
-            text=str(sensorReadings)
+            text=str(sensorReadings[0])
         )
         BeginLoggingWindowCanvas.itemconfig(
             accelerometerDisplay,
-            text=str(sensorReadings)
+            text=str(sensorReadings[1])
         )
-        
+
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,
             text=str(elapsedTime) + "s"

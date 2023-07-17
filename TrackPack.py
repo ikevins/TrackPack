@@ -408,13 +408,13 @@ def openBeginLoggingWindow():
         global quarterMileComplete
         global afterIdentifier
         global maxSpeed
+        sensorReadings = inertialMeasurementUnit()
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round(((endTime - startTime) - functionRunTime), 2)
         distancePerMilliSecond = (speed / 3600000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
-        sensorReadings = inertialMeasurementUnit()
         if (speed > maxSpeed):
             maxSpeed = speed
             print(maxSpeed)

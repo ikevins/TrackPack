@@ -106,7 +106,7 @@ try:
 
         # Calculate the direction
         direction = ""
-        angle = math.degrees(math.atan2(x, y))
+        angle = math.degrees(math.atan2(magnetometer_x, magnetometer_y))
         if angle < 0:
             angle += 360
         if 45 <= angle < 135:

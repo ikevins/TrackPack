@@ -7,6 +7,7 @@ I2C_ADDRESS = 0x6B
 
 # Register addresses of the accelerometer
 CTRL1_XL = 0x10
+CTRL8_XL = 0x17
 OUTX_L_XL = 0x28
 OUTX_H_XL = 0x29
 OUTY_L_XL = 0x2A
@@ -23,6 +24,7 @@ bus = smbus.SMBus(1)  # 1 for Raspberry Pi 2 and newer
 
 # Configure the accelerometer
 bus.write_byte_data(I2C_ADDRESS, CTRL1_XL, 0x50)  # Set the accelerometer to 208 Hz, ±2g range
+bus.write_byte_data(I2C_ADDRESS, CTRL8_XL, 0xC0)  # Enable high-pass filter to remove gravity offset
 
 try:
     while True:
@@ -48,12 +50,12 @@ try:
             z -= 65536
 
         # Calculate the g-force in each axis
-        g_x = x / 16384.0 - G_FORCE  # 16384 LSB/g for ±2g range
-        g_y = y / 16384.0 - G_FORCE
-        g_z = z / 16384.0 - G_FORCE
+        g_x = x / 16384.0
+        g_y = y / 16384.0
+        g_z = z / 16384.0
 
         # Calculate the total g-force
-        g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2)
+        g_total = math.sqrt(g_x ** 2 + g_y ** 2 + g_z ** 2) - 1.0  # Subtract the 1g offset
 
         # Print the g-force values
         print(f"X: {g_x:.2f}g, Y: {g_y:.2f}g, Z: {g_z:.2f}g, Total: {g_total:.2f}g")

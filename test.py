@@ -30,6 +30,9 @@ MAGNETOMETER_OUTY_H = 0x2B
 MAGNETOMETER_OUTZ_L = 0x2C
 MAGNETOMETER_OUTZ_H = 0x2D
 
+# Initialize the I2C bus
+bus = smbus.SMBus(1) #1 for Raspberry Pi 2 and newer
+
 # Configure the accelerometer
 bus.write_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_CTRL_REG1, 0x50) # Set the accelerometer to 208 Hz, ±2g range
 bus.write_byte_data(ACCELEROMETER_I2C_ADDRESS, ACCELEROMETER_CTRL_REG8, 0xC0) # Enable high-pass filter to remove gravity offset
@@ -42,9 +45,6 @@ bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG4, 0x0C) # Ul
 bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG1, 0x1C) # Output Data Rate of 80 Hz Selected
 bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG3, 0x00) # Continous Conversion Mode, 4 wire interface Selected
 bus.write_byte_data(MAGNETOMETER_I2C_ADDRESS, MAGNETOMETER_CTRL_REG2, 0x60) # 16 guass Full Scale
-
-# Initialize the I2C bus
-bus = smbus.SMBus(1) #1 for Raspberry Pi 2 and newer
 
 # Constants for gravitational acceleration
 GRAVITY = 9.80665  # m/s^2

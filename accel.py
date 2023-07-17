@@ -1,5 +1,6 @@
 import smbus
 import time
+import math
 
 bus = smbus.SMBus(1)
 address = 0x6B
@@ -43,8 +44,16 @@ while True:
     accel_y = accel_y / 16384.0
     accel_z = accel_z / 16384.0
 
+    # Compensate for orientation
+    roll = math.atan2(accel_y, accel_z)
+    pitch = math.atan2(-accel_x, math.sqrt(accel_y * accel_y + accel_z * accel_z))
+
+    accel_x_comp = accel_x * math.cos(pitch) + accel_y * math.sin(roll) * math.sin(pitch) - accel_z * math.cos(roll) * math.sin(pitch)
+    accel_y_comp = accel_y * math.cos(roll) + accel_z * math.sin(roll)
+    accel_z_comp = accel_x * math.sin(pitch) - accel_y * math.sin(roll) * math.cos(pitch) + accel_z * math.cos(roll) * math.cos(pitch)
+
     # Calculate the total acceleration
-    acceleration = (accel_x ** 2 + accel_y ** 2 + accel_z ** 2) ** 0.5
+    acceleration = (accel_x_comp ** 2 + accel_y_comp ** 2 + accel_z_comp ** 2) ** 0.5
 
     # Convert acceleration to g-forces
     gravity = 9.8  # Acceleration due to gravity in m/s^2

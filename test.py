@@ -124,3 +124,6 @@ try:
 
         # Wait for a moment
         time.sleep(0.1)
+
+except KeyboardInterrupt:
+    pass

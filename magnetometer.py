@@ -5,25 +5,17 @@ import math
 bus = smbus.SMBus(1)
 
 LIS3MDL_M_ADDRESS = 0x1E
-LIS3MDL_WHO_AM_I_M = 0x0F
+
 LIS3MDL_CTRL_REG1_M = 0x20
 LIS3MDL_CTRL_REG2_M = 0x21
 LIS3MDL_CTRL_REG3_M = 0x22
 LIS3MDL_CTRL_REG4_M = 0x23
-LIS3MDL_STATUS_REG_M = 0x27
 LIS3MDL_OUT_X_L_M = 0x28
 LIS3MDL_OUT_X_H_M = 0x29
 LIS3MDL_OUT_Y_L_M = 0x2A
 LIS3MDL_OUT_Y_H_M = 0x2B
 LIS3MDL_OUT_Z_L_M = 0x2C
 LIS3MDL_OUT_Z_H_M = 0x2D
-LIS3MDL_TEMP_OUT_L_M = 0x2E
-LIS3MDL_TEMP_OUT_H_M = 0x2F
-LIS3MDL_INT_CFG_M = 0x30
-LIS3MDL_INT_SRC_M = 0x31
-LIS3MDL_INT_THS_L_M = 0x32
-LIS3MDL_INT_THS_H_M = 0x33
-
 LIS3MDL_REG_CTL_1_TEMP_EN = 0x80
 LIS3MDL_REG_CTL_2_RESET = 0x04
 
@@ -50,7 +42,7 @@ try:
         y_l = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_L_M)
         y_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_H_M)
         z_l = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Z_L_M)
-        z_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Y_H_M)
+        z_h = bus.read_byte_data(LIS3MDL_M_ADDRESS,LIS3MDL_OUT_Z_H_M)
 
         # Convert the raw data to signed 16-bit values
         x = (x_h << 8 | x_l)

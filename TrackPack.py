@@ -408,6 +408,7 @@ def openBeginLoggingWindow():
         height=35.0
     )
 
+    readIMU()
     def update():
         functionStartTime = time.time()
         global functionRunTime
@@ -427,7 +428,6 @@ def openBeginLoggingWindow():
         distancePerMilliSecond = (speed / 3600000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
-        readIMU()
         if (speed > maxSpeed):
             maxSpeed = speed
             print(maxSpeed)
@@ -498,7 +498,7 @@ def openBeginLoggingWindow():
             accelerometerDisplay,
             text=str(sensorReadings[1])
         )
-        
+
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,
             text=str(elapsedTime) + "s"

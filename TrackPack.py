@@ -392,7 +392,7 @@ def openBeginLoggingWindow():
             else:
                 direction = "North"
 
-            return direction, g_total
+            return direction, round(g_total, 1)
         except KeyboardInterrupt:
             pass
 

@@ -754,7 +754,7 @@ def openStoredLogWindow(logs):
     )
     StoredLogWindowCanvas.place(x = 0, y = 0)
     viewVideoButton = Button(
-        BeginLoggingWindow,
+        StoredLogWindow,
         text="View Video",
         font=("Inter", 22 * -1),
         borderwidth=0,

@@ -1941,6 +1941,7 @@ quarterMileComplete = False
 afterIdentifier = ""
 currentLog = []
 maxSpeed = 0
+maxGForce = 0
 
 def coolantTemperatureTracker(response):
     global coolantTemperature

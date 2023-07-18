@@ -476,13 +476,13 @@ def openBeginLoggingWindow():
             currentLog.append(maxGForce)
             camera.stop_recording()
             saveLog(currentLog)
-            os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]))
-            #stopButton.destroy()
-            #print(quarterMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 quarterMileStats,
                 text=str(quarterMileTime) + " @ " + str(speed) + "mph"
             )
+            os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]))
+            #stopButton.destroy()
+            #print(quarterMileComplete)
         BeginLoggingWindowCanvas.itemconfig(
             speedDisplay,
             text=str(speed)

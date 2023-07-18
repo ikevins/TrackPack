@@ -20,8 +20,8 @@ camera.color_effects = None
 camera.rotation = 0
 camera.hflip = False
 camera.vflip = False
-camera.start_recording("/home/ikevins/Desktop/testvideo.h264")
+camera.start_recording("/home/ikevins/TrackPack/Videos/testvideo.h264")
 camera.wait_recording(5)
 camera.stop_recording()
 
-os.system("MP4Box -add /home/ikevins/Desktop/testvideo.h264 /home/ikevins/Desktop/convertedVideo.mp4")
+os.system("MP4Box -add /home/ikevins/TrackPack/Videos/testvideo.h264 /home/ikevins/TrackPack/Videos/convertedVideo.mp4")

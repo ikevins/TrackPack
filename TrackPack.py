@@ -419,7 +419,7 @@ def openBeginLoggingWindow():
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round((endTime - startTime), 2)
-        distancePerMilliSecond = (speed / 2000000) # Miles per ms
+        distancePerMilliSecond = (speed / 500000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
         if (speed > maxSpeed):

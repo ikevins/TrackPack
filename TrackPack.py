@@ -1,4 +1,4 @@
-import obd
+#import obd
 import random
 import smbus
 import math
@@ -399,7 +399,7 @@ def openBeginLoggingWindow():
             else:
                 direction = "North"
 
-            return direction, round(g_total, 1)
+            return direction, float(format(g_total, '.1f'))
         except KeyboardInterrupt:
             pass
 
@@ -420,7 +420,7 @@ def openBeginLoggingWindow():
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round((endTime - startTime), 2)
-        distancePerMilliSecond = (speed / 500000) # Miles per ms
+        distancePerMilliSecond = (speed / 500000) # account for misc delay
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
         if (speed > maxSpeed):
@@ -428,48 +428,48 @@ def openBeginLoggingWindow():
         if (sensorReadings[1] > maxGForce):
             maxGForce = sensorReadings[1]
 
-        if ((round(distanceTravelled, 4) == round((60 / 5280), 4)) and sixtyFootComplete == False):
-            sixtyFootTime = elapsedTime
+        if ((round(distanceTravelled, 3) == round((60 / 5280), 3)) and sixtyFootComplete == False):
+            sixtyFootTime = format(elapsedTime, '.2f')
             sixtyFootComplete = True
             currentLog.append(sixtyFootTime)
             #print(sixtyFootComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 sixtyFootStats,
-                text=str(sixtyFootTime) + "s"
+                text=sixtyFootTime + "s"
             )
         if (speed >= 60 and zeroToSixtyComplete == False):
-            zeroToSixtyTime = elapsedTime
+            zeroToSixtyTime = format(elapsedTime, '.2f')
             zeroToSixtyComplete = True
             currentLog.append(zeroToSixtyTime)
             #print(zeroToSixtyComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 zeroToSixtyStats,
-                text=str(zeroToSixtyTime) + "s"
+                text=zeroToSixtyTime + "s"
             )
-        if ((round(distanceTravelled, 4) == 0.125) and eighthMileComplete == False):
+        if ((round(distanceTravelled, 3) == 0.125) and eighthMileComplete == False):
             eighthMileSpeed = speed
-            eighthMileTime = elapsedTime
+            eighthMileTime = format(elapsedTime, '.2f')
             eighthMileComplete = True
             currentLog.append(eighthMileTime)
             currentLog.append(eighthMileSpeed)
             #print(eighthMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 eighthMileStats,
-                text=str(eighthMileTime) + " @ " + str(speed) + "mph"
+                text=eighthMileTime + " @ " + str(speed) + "mph"
             )
-        if ((round(distanceTravelled, 4) == round((1000 / 5280), 4)) and thousandFootComplete == False):
-            thousandFootTime = elapsedTime
+        if ((round(distanceTravelled, 3) == round((1000 / 5280), 3)) and thousandFootComplete == False):
+            thousandFootTime = format(elapsedTime, '.2f')
             thousandFootComplete = True
             currentLog.append(thousandFootTime)
             #print(thousandFootComplete)
             BeginLoggingWindowCanvas.itemconfig(
                 thousandFootStats,
-                text=str(thousandFootTime) + "s"
+                text=thousandFootTime + "s"
             )
-        if ((round(distanceTravelled, 4) == 0.250) and quarterMileComplete == False):
+        if ((round(distanceTravelled, 3) == 0.250) and quarterMileComplete == False):
             BeginLoggingWindow.after_cancel(afterIdentifier)
             quarterMileSpeed = speed
-            quarterMileTime = elapsedTime
+            quarterMileTime = format(elapsedTime, '.2f')
             quarterMileComplete = True
             currentLog.append(quarterMileTime)
             currentLog.append(quarterMileSpeed)
@@ -479,7 +479,7 @@ def openBeginLoggingWindow():
             saveLog(currentLog)
             BeginLoggingWindowCanvas.itemconfig(
                 quarterMileStats,
-                text=str(quarterMileTime) + " @ " + str(speed) + "mph"
+                text=quarterMileTime + " @ " + str(speed) + "mph"
             )
             os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]))
             os.system("rm /home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 ")
@@ -589,7 +589,7 @@ def openParameterLoggingWindow():
 
     def beginLoggingCountdown():
         global currentLog
-        if (speed != 0):
+        if (speed == 0):
             openVehicleMovingWindow()
         else:
             def countdown(count):
@@ -597,7 +597,7 @@ def openParameterLoggingWindow():
                 if count > 0:
                     ParameterLoggingWindow.after(1000, countdown, count - 1)
                 else:
-                    if (speed != 0):
+                    if (speed == 0):
                         openVehicleMovingWindow()
                     else:
                         ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
@@ -759,7 +759,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 22 * -1),
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: vlc.MediaPlayer("/home/ikevins/TrackPack/Videos/" + logs[0] + ".mp4").play(),
+        command=lambda: vlc.MediaPlayer("/home/ikevins/TrackPack/Videos/" + logs[0]).play(),
         relief="flat",
         bg="#A9A9A9",
         fg="#000000"
@@ -1928,7 +1928,7 @@ def openDataWindow():
         dataWindow.after(1, update)
     update()
 
-
+'''
 obd.logger.setLevel(obd.logging.DEBUG)
 
 connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
@@ -1936,11 +1936,11 @@ connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=Fals
 #Continuously query until the amount of supported commands is greater than 100
 while len(connection.supported_commands) < 100:
     connection = obd.Async("/dev/rfcomm0", protocol="6", baudrate="38400", fast=False, timeout = 30)
-
+'''
 
 coolantTemperature = 0
 rpm = 0
-speed = 0
+speed = 60
 speedTotal = 0
 throttlePosition = 0
 fuelLevel = 0
@@ -1953,7 +1953,7 @@ longFuelTrim2 = 0
 fuelPressure = 0
 intakePressure = 0
 maf = 0
-fuelType = 93
+fuelType = 0
 evapPressure = 0
 malfunctionIndicatorLight = False
 CEL_count = 0
@@ -2063,7 +2063,7 @@ def evapTracker (response):
     if not response.is_null():
         evapPressure = int(response.value.magnitude)
 
-
+'''
 # Start the OBD connection and add the callbacks
 connection.watch(obd.commands.COOLANT_TEMP, callback=coolantTemperatureTracker)
 connection.watch(obd.commands.RPM, callback=rpmTracker)
@@ -2085,7 +2085,7 @@ connection.watch(obd.commands.MAF, callback=mafTracker)
 connection.watch(obd.commands.FUEL_TYPE, callback=fuelTypeList)
 connection.watch(obd.commands.EVAP_VAPOR_PRESSURE, callback=evapTracker)
 connection.start()
-
+'''
 
 mainWindowCanvas = Canvas(
     mainWindow,

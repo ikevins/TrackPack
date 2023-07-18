@@ -760,7 +760,9 @@ def openStoredLogWindow(logs):
         borderwidth=0,
         highlightthickness=0,
         command=lambda: vlc.MediaPlayer("/home/ikevins/TrackPack/Videos/" + logs[0] + ".mp4").play(),
-        relief="flat"
+        relief="flat",
+        bg="#A9A9A9",          
+        fg="#000000"
     )
     viewVideoButton.place(
         x=270.0,

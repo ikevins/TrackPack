@@ -17,7 +17,6 @@ camera.meter_mode = 'average'
 camera.awb_mode = 'auto'
 camera.image_effect = 'none'
 camera.color_effects = None
-camera.rotation = 0
 camera.hflip = False
 camera.vflip = False
 camera.start_recording("/home/ikevins/TrackPack/Videos/testvideo.h264")

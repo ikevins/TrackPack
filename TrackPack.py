@@ -585,7 +585,7 @@ def openParameterLoggingWindow():
         afterIdentifier = ""
         currentLog = []
         maxSpeed = 0
-        maxGForce = 0
+        maxGForce = float(0)
 
     def beginLoggingCountdown():
         global currentLog
@@ -1969,7 +1969,7 @@ quarterMileComplete = False
 afterIdentifier = ""
 currentLog = []
 maxSpeed = 0
-maxGForce = 0
+maxGForce = float(0)
 
 def coolantTemperatureTracker(response):
     global coolantTemperature

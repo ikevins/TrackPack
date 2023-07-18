@@ -410,8 +410,9 @@ def openBeginLoggingWindow():
         global maxSpeed
         global maxGForce
         #sensorReadings = inertialMeasurementUnit()
+        afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
-        elapsedTime = round(((endTime - startTime) - functionRunTime), 2)
+        elapsedTime = round(endTime - startTime)
         distancePerMilliSecond = (speed / 3600000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
@@ -494,7 +495,6 @@ def openBeginLoggingWindow():
         )
         functionEndTime = time.time()
         functionRunTime += (functionEndTime - functionStartTime)
-        afterIdentifier = BeginLoggingWindow.after(1, update)
         #print(functionRunTime)
     update()
 

@@ -4,9 +4,6 @@ import os
 camera = PiCamera()
 time.sleep(2)
 camera.resolution = (1280, 720)
-camera.exposure_mode = 'auto'
-camera.meter_mode = 'average'
-camera.awb_mode = 'auto'
 camera.rotation = 270
 camera.start_recording("/home/ikevins/Desktop/testvideo.h264")
 camera.wait_recording(5)

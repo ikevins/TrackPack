@@ -152,7 +152,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     sixtyFootStats = BeginLoggingWindowCanvas.create_text(
-        515.0,
+        510.0,
         152.0,
         anchor="nw",
         fill="#000000",
@@ -175,7 +175,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     zeroToSixtyStats = BeginLoggingWindowCanvas.create_text(
-        515.0,
+        510.0,
         187.0,
         anchor="nw",
         fill="#000000",
@@ -198,7 +198,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     eighthMileStats = BeginLoggingWindowCanvas.create_text(
-        415.0,
+        390.0,
         220.0,
         anchor="nw",
         fill="#000000",
@@ -221,7 +221,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     thousandFootStats = BeginLoggingWindowCanvas.create_text(
-        500.0,
+        495.0,
         257.0,
         anchor="nw",
         fill="#000000",
@@ -244,7 +244,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     quarterMileStats = BeginLoggingWindowCanvas.create_text(
-        400.0,
+        390.0,
         292.0,
         anchor="nw",
         fill="#000000",
@@ -828,7 +828,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 24 * -1)
     )
     StoredLogWindowCanvas.create_text(
-        515.0,
+        510.0,
         152.0,
         anchor="nw",
         text=logs[4] + "s",
@@ -852,7 +852,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 24 * -1)
     )
     StoredLogWindowCanvas.create_text(
-        515.0,
+        510.0,
         187.0,
         anchor="nw",
         text=logs[5] + "s",
@@ -875,15 +875,14 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
-    if not (logs[6] == None and logs[7] == None):
-        StoredLogWindowCanvas.create_text(
-            400.0,
-            220.0,
-            anchor="nw",
-            text=logs[6] + "s @ " + logs[7] + "mph",
-            fill="#000000",
-            font=("Inter", 24 * -1)
-        )
+    StoredLogWindowCanvas.create_text(
+        390.0,
+        220.0,
+        anchor="nw",
+        text=logs[6] + "s @ " + logs[7] + "mph",
+        fill="#000000",
+        font=("Inter", 24 * -1)
+    )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         255.0,
@@ -901,7 +900,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 24 * -1)
     )
     StoredLogWindowCanvas.create_text(
-        500.0,
+        495.0,
         257.0,
         anchor="nw",
         text=logs[8] + "s",
@@ -1313,7 +1312,7 @@ def openMoreDataWindow():
         anchor="nw",
         text="Engine Coolant Temperature (°F)",
         fill="#000000",
-        font=("Inter", 24 * -1)
+        font=("Inter", 22 * -1)
     )
     dataWindowCanvas.create_rectangle(
         600.0,
@@ -1794,7 +1793,7 @@ def openDataWindow():
         anchor="nw",
         text="Engine Speed (RPM)",
         fill="#000000",
-        font=("Inter", 24 * -1)
+        font=("Inter", 22 * -1)
     )
     rpmDisplay = dataWindowCanvas.create_text(
         390.0,
@@ -1818,7 +1817,7 @@ def openDataWindow():
         anchor="nw",
         text="Vehicle Speed (MPH)",
         fill="#000000",
-        font=("Inter", 24 * -1)
+        font=("Inter", 22 * -1)
     )
     speedDisplay = dataWindowCanvas.create_text(
         660.0,
@@ -1862,7 +1861,7 @@ def openDataWindow():
         )
     dataWindowCanvas.create_text(
         345.0,
-        282.0,
+        275.0,
         anchor="nw",
         text="Fuel Level",
         fill="#000000",
@@ -1890,7 +1889,7 @@ def openDataWindow():
         anchor="nw",
         text="Oil Temperature (°F)",
         fill="#000000",
-        font=("Inter", 24 * -1)
+        font=("Inter", 22 * -1)
     )
     oilTemperatureDisplay = dataWindowCanvas.create_text(
         660.0,

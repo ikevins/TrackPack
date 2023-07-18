@@ -19,8 +19,10 @@ mainWindow.configure(bg = "#FFFFFF")
 
 camera = PiCamera()
 camera.resolution = (1280, 720)
-camera.vflip = False
-camera.contrast = 10
+camera.rotation = 270
+camera.exposure_mode = 'auto'
+camera.meter_mode = 'average'
+camera.awb_mode = 'auto'
 
 # I2C address of the LSM6DSL accelerometer
 ACCELEROMETER_I2C_ADDRESS = 0x6B

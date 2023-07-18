@@ -413,13 +413,13 @@ def openBeginLoggingWindow():
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
         elapsedTime = round((endTime - startTime), 2)
-        distancePerMilliSecond = (speed / 3000000) # Miles per ms
+        distancePerMilliSecond = (speed / 2000000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
         if (speed > maxSpeed):
             maxSpeed = speed
-        #if (sensorReadings[1] > maxGForce):
-            #maxGForce = sensorReadings[1]
+        if (sensorReadings[1] > maxGForce):
+            maxGForce = sensorReadings[1]
 
         if ((round(distanceTravelled, 4) == round((60 / 5280), 4)) and sixtyFootComplete == False):
             sixtyFootTime = elapsedTime
@@ -479,7 +479,7 @@ def openBeginLoggingWindow():
             speedDisplay,
             text=str(speed)
         )
-        '''
+
         BeginLoggingWindowCanvas.itemconfig(
             magnetometerDisplay,
             text=str(sensorReadings[0])
@@ -488,7 +488,7 @@ def openBeginLoggingWindow():
             accelerometerDisplay,
             text=str(sensorReadings[1])
         )
-        '''
+
         BeginLoggingWindowCanvas.itemconfig(
             loggingTime,
             text=str(elapsedTime) + "s"

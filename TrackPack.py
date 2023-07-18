@@ -802,15 +802,6 @@ def openStoredLogWindow(logs):
         fill="#A9A9A9",
         outline=""
     )
-    if not (logs[9] == None):
-        StoredLogWindowCanvas.create_text(
-            357.0,
-            103.0,
-            anchor="nw",
-            text=logs[9] + "s",
-            fill="#000000",
-            font=("Inter", 35 * -1)
-        )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         150.0,
@@ -827,14 +818,15 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
-    StoredLogWindowCanvas.create_text(
-        510.0,
-        152.0,
-        anchor="nw",
-        text=logs[4] + "s",
-        fill="#000000",
-        font=("Inter", 24 * -1),
-    )
+    if (logs[4] != None):
+        StoredLogWindowCanvas.create_text(
+            510.0,
+            152.0,
+            anchor="nw",
+            text=logs[4] + "s",
+            fill="#000000",
+            font=("Inter", 24 * -1),
+        )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         185.0,
@@ -851,14 +843,15 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
-    StoredLogWindowCanvas.create_text(
-        510.0,
-        187.0,
-        anchor="nw",
-        text=logs[5] + "s",
-        fill="#000000",
-        font=("Inter", 24 * -1)
-    )
+    if (logs[5] != None):
+        StoredLogWindowCanvas.create_text(
+            510.0,
+            187.0,
+            anchor="nw",
+            text=logs[5] + "s",
+            fill="#000000",
+            font=("Inter", 24 * -1)
+        )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         220.0,
@@ -875,14 +868,15 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
-    StoredLogWindowCanvas.create_text(
-        375.0,
-        220.0,
-        anchor="nw",
-        text=logs[6] + "s @ " + logs[7] + "mph",
-        fill="#000000",
-        font=("Inter", 24 * -1)
-    )
+    if (logs[6] != None and logs[7] != None):
+        StoredLogWindowCanvas.create_text(
+            375.0,
+            220.0,
+            anchor="nw",
+            text=logs[6] + "s @ " + logs[7] + "mph",
+            fill="#000000",
+            font=("Inter", 24 * -1)
+        )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         255.0,
@@ -899,14 +893,15 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
-    StoredLogWindowCanvas.create_text(
-        495.0,
-        257.0,
-        anchor="nw",
-        text=logs[8] + "s",
-        fill="#000000",
-        font=("Inter", 24 * -1)
-    )
+    if (logs[8] != None):
+        StoredLogWindowCanvas.create_text(
+            495.0,
+            257.0,
+            anchor="nw",
+            text=logs[8] + "s",
+            fill="#000000",
+            font=("Inter", 24 * -1)
+        )
     StoredLogWindowCanvas.create_rectangle(
         220.0,
         290.0,
@@ -923,6 +918,7 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 24 * -1)
     )
+    if (logs[9] != None and log[10] != None):
     StoredLogWindowCanvas.create_text(
         375.0,
         292.0,
@@ -939,22 +935,24 @@ def openStoredLogWindow(logs):
         fill="#000000",
         font=("Inter", 28 * -1)
     )
-    StoredLogWindowCanvas.create_text(
-        90.0,
-        370.0,
-        anchor="center",
-        text=logs[11],
-        fill="#000000",
-        font=("Inter", 36 * -1)
-    )
-    StoredLogWindowCanvas.create_text(
-        709.0,
-        370.0,
-        anchor="center",
-        text=logs[12],
-        fill="#000000",
-        font=("Inter", 36 * -1)
-    )
+    if (logs[11] != None):
+        StoredLogWindowCanvas.create_text(
+            90.0,
+            370.0,
+            anchor="center",
+            text=logs[11],
+            fill="#000000",
+            font=("Inter", 36 * -1)
+        )
+    if (logs[12] != None):
+        StoredLogWindowCanvas.create_text(
+            709.0,
+            370.0,
+            anchor="center",
+            text=logs[12],
+            fill="#000000",
+            font=("Inter", 36 * -1)
+        )
     StoredLogWindowCanvas.create_text(
         89.0,
         415.0,

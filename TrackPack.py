@@ -4,6 +4,7 @@ import smbus
 import math
 import time
 import os
+import vlc
 from tkinter import *
 from tkinter import font as tkFont
 from datetime import datetime
@@ -752,6 +753,21 @@ def openStoredLogWindow(logs):
         relief = "ridge"
     )
     StoredLogWindowCanvas.place(x = 0, y = 0)
+    viewVideoButton = Button(
+        BeginLoggingWindow,
+        text="View Video",
+        font=("Inter", 22 * -1),
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: vlc.MediaPlayer(logs[0] + ".mp4").play(),
+        relief="flat"
+    )
+    viewVideoButton.place(
+        x=270.0,
+        y=350.0,
+        width=260.0,
+        height=75.0
+    )
     StoredLogWindowCanvas.create_rectangle(
         22.0,
         329.0,
@@ -934,7 +950,7 @@ def openStoredLogWindow(logs):
         709.0,
         370.0,
         anchor="center",
-        text=logs[11],
+        text=logs[12],
         fill="#000000",
         font=("Inter", 36 * -1)
     )

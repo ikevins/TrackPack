@@ -198,7 +198,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     eighthMileStats = BeginLoggingWindowCanvas.create_text(
-        380.0,
+        375.0,
         220.0,
         anchor="nw",
         fill="#000000",
@@ -244,7 +244,7 @@ def openBeginLoggingWindow():
         font=("Inter", 24 * -1)
     )
     quarterMileStats = BeginLoggingWindowCanvas.create_text(
-        380.0,
+        375.0,
         292.0,
         anchor="nw",
         fill="#000000",
@@ -876,7 +876,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 24 * -1)
     )
     StoredLogWindowCanvas.create_text(
-        380.0,
+        375.0,
         220.0,
         anchor="nw",
         text=logs[6] + "s @ " + logs[7] + "mph",
@@ -924,7 +924,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 24 * -1)
     )
     StoredLogWindowCanvas.create_text(
-        380.0,
+        375.0,
         292.0,
         anchor="nw",
         text=logs[9] + "s @ " + logs[10] + "mph",

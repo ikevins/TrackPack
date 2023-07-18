@@ -480,7 +480,7 @@ def openBeginLoggingWindow():
                 quarterMileStats,
                 text=str(quarterMileTime) + " @ " + str(speed) + "mph"
             )
-            os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]))
+            os.system("MP4Box -add " + "/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/TrackPack/Videos/" + str(currentLog[0]))
             #stopButton.destroy()
             #print(quarterMileComplete)
         BeginLoggingWindowCanvas.itemconfig(
@@ -605,7 +605,7 @@ def openParameterLoggingWindow():
                         currentLog.append(datetime.now().day)
                         currentLog.append(datetime.now().year)
                         openBeginLoggingWindow()
-                        camera.start_recording("/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264")
+                        camera.start_recording("/TrackPack/Videos/" + str(currentLog[0]) + ".h264")
                         #ParameterLoggingWindow.destroy()
             beginLoggingButton.destroy()
             countdownText = ParameterLoggingWindowCanvas.create_text(

@@ -409,11 +409,11 @@ def openBeginLoggingWindow():
         global afterIdentifier
         global maxSpeed
         global maxGForce
-        #sensorReadings = inertialMeasurementUnit()
+        sensorReadings = inertialMeasurementUnit()
         afterIdentifier = BeginLoggingWindow.after(1, update)
         endTime = time.time()
-        elapsedTime = round(endTime - startTime)
-        distancePerMilliSecond = (speed / 3600000) # Miles per ms
+        elapsedTime = round((endTime - startTime), 2)
+        distancePerMilliSecond = (speed / 3000000) # Miles per ms
         distanceTravelled += distancePerMilliSecond
         #speed = random.randint(0, 100)
         if (speed > maxSpeed):

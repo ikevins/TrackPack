@@ -3,10 +3,11 @@ import random
 import smbus
 import math
 import time
-import threading
+import os
 from tkinter import *
 from tkinter import font as tkFont
 from datetime import datetime
+from picamera import PiCamera
 
 mainWindow = Tk()
 
@@ -14,6 +15,11 @@ mainWindow = Tk()
 mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
+
+camera = PiCamera()
+camera.resolution = (1280, 720)
+camera.vflip = False
+camera.contrast = 10
 
 # I2C address of the LSM6DSL accelerometer
 ACCELEROMETER_I2C_ADDRESS = 0x6B
@@ -468,7 +474,9 @@ def openBeginLoggingWindow():
             currentLog.append(quarterMileSpeed)
             currentLog.append(maxSpeed)
             currentLog.append(maxGForce)
+            camera.stop_recording()
             saveLog(currentLog)
+            os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + currentLog[0] + ".h264 " + "/home/ikevins/TrackPack/Videos/" + currentLog[0])
             #stopButton.destroy()
             #print(quarterMileComplete)
             BeginLoggingWindowCanvas.itemconfig(
@@ -597,6 +605,7 @@ def openParameterLoggingWindow():
                         currentLog.append(datetime.now().day)
                         currentLog.append(datetime.now().year)
                         openBeginLoggingWindow()
+                        camera.start_recording("/home/ikevins/TrackPack/Videos/" + currentLog[0] + ".h264")
                         #ParameterLoggingWindow.destroy()
             beginLoggingButton.destroy()
             countdownText = ParameterLoggingWindowCanvas.create_text(

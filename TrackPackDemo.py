@@ -481,8 +481,8 @@ def openBeginLoggingWindow():
                 quarterMileStats,
                 text=quarterMileTime + "s @ " + str(speed) + "mph"
             )
-            os.system("MP4Box -add " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/ikevins/TrackPack/Videos/" + str(currentLog[0]))
-            os.system("rm /home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264 ")
+            os.system("MP4Box -add " + "/home/kevin/TrackPack/Videos/" + str(currentLog[0]) + ".h264 " + "/home/kevin/TrackPack/Videos/" + str(currentLog[0]))
+            os.system("rm /home/kevin/TrackPack/Videos/" + str(currentLog[0]) + ".h264 ")
             #stopButton.destroy()
             #print(quarterMileComplete)
         BeginLoggingWindowCanvas.itemconfig(
@@ -607,7 +607,7 @@ def openParameterLoggingWindow():
                         currentLog.append(datetime.now().day)
                         currentLog.append(datetime.now().year)
                         openBeginLoggingWindow()
-                        camera.start_recording("/home/ikevins/TrackPack/Videos/" + str(currentLog[0]) + ".h264")
+                        camera.start_recording("/home/kevin/TrackPack/Videos/" + str(currentLog[0]) + ".h264")
                         #ParameterLoggingWindow.destroy()
             beginLoggingButton.destroy()
             countdownText = ParameterLoggingWindowCanvas.create_text(
@@ -759,7 +759,7 @@ def openStoredLogWindow(logs):
         font=("Inter", 22 * -1),
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: vlc.MediaPlayer("/home/ikevins/TrackPack/Videos/" + logs[0]).play(),
+        command=lambda: vlc.MediaPlayer("/home/kevin/TrackPack/Videos/" + logs[0]).play(),
         relief="flat",
         bg="#A9A9A9",
         fg="#000000"

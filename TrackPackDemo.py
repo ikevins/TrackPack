@@ -589,7 +589,7 @@ def openParameterLoggingWindow():
 
     def beginLoggingCountdown():
         global currentLog
-        if (speed != 0):
+        if (speed == 0):
             openVehicleMovingWindow()
         else:
             def countdown(count):
@@ -597,7 +597,7 @@ def openParameterLoggingWindow():
                 if count > 0:
                     ParameterLoggingWindow.after(1000, countdown, count - 1)
                 else:
-                    if (speed != 0):
+                    if (speed == 0):
                         openVehicleMovingWindow()
                     else:
                         ParameterLoggingWindowCanvas.itemconfig(countdownText, text="Go!")
@@ -1938,7 +1938,7 @@ def openDataWindow():
 
 coolantTemperature = 0
 rpm = 0
-speed = 0
+speed = 60
 throttlePosition = 0
 fuelLevel = 0
 oilTemperature = 0

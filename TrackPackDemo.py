@@ -12,8 +12,8 @@ from picamera import PiCamera
 
 mainWindow = Tk()
 
-#mainWindow.geometry("800x480")
-mainWindow.attributes('-fullscreen',True)
+mainWindow.geometry("800x480")
+#mainWindow.attributes('-fullscreen',True)
 mainWindow.title("TrackPack")
 mainWindow.configure(bg = "#FFFFFF")
 
@@ -21,6 +21,7 @@ camera = PiCamera()
 camera.resolution = (1280, 720)
 camera.vflip = False
 camera.contrast = 10
+camera.rotation = 270
 
 # I2C address of the LSM6DSL accelerometer
 ACCELEROMETER_I2C_ADDRESS = 0x6B
@@ -73,8 +74,8 @@ def openBeginLoggingWindow():
     startTime = time.time()
 
     BeginLoggingWindow=Toplevel()
-    #BeginLoggingWindow.geometry("800x480")
-    BeginLoggingWindow.attributes('-fullscreen',True)
+    BeginLoggingWindow.geometry("800x480")
+    #BeginLoggingWindow.attributes('-fullscreen',True)
     BeginLoggingWindow.title("TrackPack Begin Parameter Logging")
     BeginLoggingWindow.configure(bg = "#FFFFFF")
 
@@ -517,8 +518,8 @@ def saveLog(currentLog):
 
 def openNoLogsWindow():
     noLogsWindow=Toplevel()
-    #noLogsWindow.geometry("800x480")
-    noLogsWindow.attributes('-fullscreen',True)
+    noLogsWindow.geometry("800x480")
+    #noLogsWindow.attributes('-fullscreen',True)
     noLogsWindow.title("TrackPack Review Stored Data")
     noLogsWindow.configure(bg = "#FFFFFF")
 
@@ -558,8 +559,8 @@ def openNoLogsWindow():
 
 def openParameterLoggingWindow():
     ParameterLoggingWindow=Toplevel()
-    #ParameterLoggingWindow.geometry("800x480")
-    ParameterLoggingWindow.attributes('-fullscreen',True)
+    ParameterLoggingWindow.geometry("800x480")
+    #ParameterLoggingWindow.attributes('-fullscreen',True)
     ParameterLoggingWindow.title("TrackPack Parameter Logging")
     ParameterLoggingWindow.configure(bg = "#FFFFFF")
     global speed
@@ -678,8 +679,8 @@ def openStoredDataWindow():
         openNoLogsWindow()
     else:
         StoredDataWindow=Toplevel()
-        #StoredDataWindow.geometry("800x480")
-        StoredDataWindow.attributes('-fullscreen',True)
+        StoredDataWindow.geometry("800x480")
+        #StoredDataWindow.attributes('-fullscreen',True)
         StoredDataWindow.title("TrackPack Review Stored Data")
         StoredDataWindow.configure(bg = "#FFFFFF")
         StoredDataWindowCanvas = Canvas(
@@ -731,8 +732,8 @@ def openStoredDataWindow():
 
 def openStoredLogWindow(logs):
     StoredLogWindow=Toplevel()
-    #StoredLogWindow.geometry("800x480")
-    StoredLogWindow.attributes('-fullscreen',True)
+    StoredLogWindow.geometry("800x480")
+    #StoredLogWindow.attributes('-fullscreen',True)
     StoredLogWindow.title("TrackPack Review Stored Data")
     StoredLogWindow.configure(bg = "#FFFFFF")
 
@@ -987,8 +988,8 @@ def checkDTC():
 
 def openDTCWindow():
     DTCWindow=Toplevel()
-    #DTCWindow.geometry("800x480")
-    DTCWindow.attributes('-fullscreen',True)
+    DTCWindow.geometry("800x480")
+    #DTCWindow.attributes('-fullscreen',True)
     DTCWindow.title("TrackPack Diagnostic Information")
     DTCWindow.configure(bg = "#FFFFFF")
 
@@ -1053,8 +1054,8 @@ def openDTCWindow():
 
 def openNoDTCWindow():
     noDTCWindow=Toplevel()
-    #noDTCWindow.geometry("800x480")
-    noDTCWindow.attributes('-fullscreen',True)
+    noDTCWindow.geometry("800x480")
+    #noDTCWindow.attributes('-fullscreen',True)
     noDTCWindow.title("TrackPack Diagnostic Information")
     noDTCWindow.configure(bg = "#FFFFFF")
 
@@ -1094,8 +1095,8 @@ def openNoDTCWindow():
 
 def openVehicleMovingWindow():
     vehicleMovingWindow=Toplevel()
-    #vehicleMovingWindow.geometry("800x480")
-    vehicleMovingWindow.attributes('-fullscreen',True)
+    vehicleMovingWindow.geometry("800x480")
+    #vehicleMovingWindow.attributes('-fullscreen',True)
     vehicleMovingWindow.title("TrackPack Parameter Logging")
     vehicleMovingWindow.configure(bg = "#FFFFFF")
 
@@ -1135,8 +1136,8 @@ def openVehicleMovingWindow():
 
 def openMoreDataWindow():
     dataWindow=Toplevel()
-    #dataWindow.geometry("800x480")
-    dataWindow.attributes('-fullscreen',True)
+    dataWindow.geometry("800x480")
+    #dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 
@@ -1686,8 +1687,8 @@ def openMoreDataWindow():
 
 def openDataWindow():
     dataWindow=Toplevel()
-    #dataWindow.geometry("800x480")
-    dataWindow.attributes('-fullscreen',True)
+    dataWindow.geometry("800x480")
+    #dataWindow.attributes('-fullscreen',True)
     dataWindow.title("TrackPack OBD-II Data")
     dataWindow.configure(bg = "#FFFFFF")
 

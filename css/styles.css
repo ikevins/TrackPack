@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: Arial, sans-serif; /* Add a fallback font for better compatibility */
+  font-family: Arial, sans-serif;
 }
 
 html {
@@ -196,13 +196,13 @@ nav a:hover {
 }
 
 .teamMembers {
-    display: flex; /* Use flexbox to make the items appear in a horizontal line */
-    justify-content: space-between; /* Distribute the items evenly with space between */
+    display: flex;
+    justify-content: space-between;
     position: relative;
 }
 
 .teamMemberInfo {
-    text-align: center; /* Center the content within each team member info */
+    text-align: center;
     margin-right: 100px;
 }
 
@@ -218,7 +218,7 @@ nav a:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
-    opacity: 0; /* Hidden by default */
+    opacity: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -228,7 +228,7 @@ nav a:hover {
 }
 
 .teamMemberInfo:hover .teamMemberOverlay {
-    opacity: 1; /* Show the overlay on hover */
+    opacity: 1;
 }
 
 .teamMemberOverlay h2 {
@@ -241,17 +241,17 @@ nav a:hover {
 }
 
 .teamMemberInfo img {
-    display: block; /* This ensures the image doesn't interfere with the alignment */
-    margin: 0 auto; /* Center the image horizontally within the container */
-    width: 350px; /* Set your desired width */
-    height: 350px; /* Set your desired height */
-    object-fit: cover; /* This property ensures the image maintains its aspect ratio while covering the specified dimensions */
+    display: block;
+    margin: 0 auto;
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
     border-radius: 15%;
 }
 
 .reviewerMembers {
-    justify-content: space-between; /* Distribute the items evenly with space between */
-    align-items: center; /* Center the items vertically */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .reviewerMemberInfo {
@@ -320,32 +320,29 @@ nav a:hover {
 
 .documentContainer {
     display: flex;
-    flex-wrap: nowrap; /* Prevent videos from wrapping to the next line */
-    overflow-x: auto; /* Enable horizontal scrolling */
+    flex-wrap: nowrap;
+    overflow-x: auto;
     overflow-y: hidden; 
     scroll-behavior: smooth;
-    width: 1260px; /* Width of the container to hold two and 1/2 videos (2.5 * 640px) */
-    margin: 0 auto; /* Center the container horizontally */
+    width: 1260px;
+    margin: 0 auto;
 }
 
-/* Track */
 .documentContainer::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar track */
+    width: 10px;
 }
 
-/* Handle */
 .documentContainer::-webkit-scrollbar-thumb {
-    background-color: rgba(128, 128, 128, 0.6); /* Color of the scrollbar handle */
-    border-radius: 25px; /* Rounded corners for the handle */
+    background-color: rgba(128, 128, 128, 0.6);
+    border-radius: 25px;
 }
 
-/* Handle on hover */
 .documentContainer::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(255, 0, 0, 0.6); /* Color of the scrollbar handle on hover */
+    background-color: rgb(255, 0, 0, 0.6);
 }
 
 .documentWrapper {
-    flex: 0 0 240px; /* Set the width of each video wrapper to 640px */
+    flex: 0 0 240px;
     margin-right: 10px;
     height: 300px;
     text-align: center;
@@ -362,127 +359,117 @@ nav a:hover {
 
 .videoContainer {
     display: flex;
-    flex-wrap: nowrap; /* Prevent videos from wrapping to the next line */
-    overflow-x: auto; /* Enable horizontal scrolling */
+    flex-wrap: nowrap;
+    overflow-x: auto;
     scroll-behavior: smooth;
-    width: 1600px; /* Width of the container to hold two and 1/2 videos (2.5 * 640px) */
-    overflow-y: hidden; /* Hide the vertical overflow */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    margin: 0 auto; /* Center the container horizontally */
+    width: 1600px;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin: 0 auto;
 }
 
-/* Track */
 .videoContainer::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar track */
+    width: 10px;
 }
 
-/* Handle */
 .videoContainer::-webkit-scrollbar-thumb {
-    background-color: rgba(128, 128, 128, 0.6); /* Color of the scrollbar handle */
-    border-radius: 25px; /* Rounded corners for the handle */
+    background-color: rgba(128, 128, 128, 0.6);
+    border-radius: 25px;
 }
 
 /* Handle on hover */
 .videoContainer::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(255, 0, 0, 0.6); /* Color of the scrollbar handle on hover */
+    background-color: rgb(255, 0, 0, 0.6);
 }
 
 .videoWrapper {
-    flex: 0 0 640px; /* Set the width of each video wrapper to 640px */
+    flex: 0 0 640px;
     margin-right: 10px;
     height: 360px;
 }
 
-/* Responsive Styles */
-
-/* Adjust navigation bar for smaller screens */
 @media screen and (max-width: 768px) {
     nav {
-        top: 0; /* Move the navigation bar to the top of the page on small screens */
-        background-color: #333; /* Add a background color to improve visibility */
+        top: 0;
+        background-color: #333;
     }
     nav ul {
-        flex-direction: column; /* Change the navigation links to display vertically */
+        flex-direction: column;
     }
     nav li {
-        font-size: 18px; /* Reduce the font size of navigation links for smaller screens */
-        padding: 8px; /* Reduce the padding for better spacing on small screens */
+        font-size: 18px;
+        padding: 8px;
     }
 }
 
-/* Adjust section containers for smaller screens */
 @media screen and (max-width: 768px) {
     .sections {
-        height: auto; /* Allow sections to grow with their content on smaller screens */
+        height: auto;
     }
 }
 
-/* Adjust homeContainer for smaller screens */
 @media screen and (max-width: 768px) {
     .homeContainer {
-        padding: 20px; /* Add padding to the homeContainer for better spacing on small screens */
+        padding: 20px;
     }
     .homeContainer h1 {
-        font-size: 36px; /* Reduce the font size of the h1 on smaller screens */
+        font-size: 36px;
     }
     .homeContainer h2 {
-        font-size: 24px; /* Reduce the font size of the h2 on smaller screens */
+        font-size: 24px;
     }
 }
 
-/* Adjust aboutContainer for smaller screens */
 @media screen and (max-width: 768px) {
     .aboutContainer {
-        padding: 20px; /* Add padding to the aboutContainer for better spacing on small screens */
+        padding: 20px;
     }
     .aboutContainer h1 {
-        font-size: 36px; /* Reduce the font size of the h1 on smaller screens */
+        font-size: 36px;
     }
     .aboutContainer p {
-        font-size: 18px; /* Reduce the font size of the p on smaller screens */
+        font-size: 18px;
     }
 }
 
-/* Adjust teamContainer for smaller screens */
 @media screen and (max-width: 768px) {
     .teamContainer {
-        padding: 20px; /* Add padding to the teamContainer for better spacing on small screens */
+        padding: 20px;
     }
     .teamContainer h1 {
-        font-size: 36px; /* Reduce the font size of the h1 on smaller screens */
+        font-size: 36px;
     }
     .teamContainer h3 {
-        font-size: 24px; /* Reduce the font size of the h3 on smaller screens */
+        font-size: 24px;
     }
     .teamMembers {
-        flex-direction: column; /* Stack team members vertically on smaller screens */
+        flex-direction: column;
     }
     .teamMemberInfo {
-        margin-right: 0; /* Remove right margin for team members on smaller screens */
-        margin-bottom: 20px; /* Add bottom margin for spacing between team members on smaller screens */
+        margin-right: 0;
+        margin-bottom: 20px; 
     }
 }
 
-/* Adjust documentationContainer for smaller screens */
 @media screen and (max-width: 768px) {
     .documentationContainer {
-        padding: 20px; /* Add padding to the documentationContainer for better spacing on small screens */
+        padding: 20px;
     }
     .documentContainer {
-        width: 100%; /* Adjust the width of documentContainer to fit the full screen width on smaller screens */
+        width: 100%;
     }
     .documentWrapper {
-        flex: 0 0 100%; /* Adjust the width of documentWrapper to fit the full screen width on smaller screens */
-        margin-right: 0; /* Remove right margin for documentWrapper on smaller screens */
-        margin-bottom: 20px; /* Add bottom margin for spacing between documents on smaller screens */
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
     }
     .videoContainer {
-        width: 100%; /* Adjust the width of videoContainer to fit the full screen width on smaller screens */
+        width: 100%;
     }
     .videoWrapper {
-        flex: 0 0 100%; /* Adjust the width of videoWrapper to fit the full screen width on smaller screens */
-        margin-right: 0; /* Remove right margin for videoWrapper on smaller screens */
-        margin-bottom: 20px; /* Add bottom margin for spacing between videos on smaller screens */
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
     }
 }
